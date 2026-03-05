@@ -1,4 +1,5 @@
 import { ScrollReveal, Parallax } from "./ScrollReveal";
+import { TextScramble } from "./TextScramble";
 
 const experiences = [
   {
@@ -25,7 +26,7 @@ export function Work() {
           <Parallax offset={-30}>
             <ScrollReveal>
               <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
-                Work &amp; Experience
+                <TextScramble text="Work & Experience" />
               </h3>
             </ScrollReveal>
           </Parallax>

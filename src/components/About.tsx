@@ -1,4 +1,5 @@
 import { ScrollReveal, Parallax } from "./ScrollReveal";
+import { TextScramble } from "./TextScramble";
 
 export function About() {
   return (
@@ -8,7 +9,7 @@ export function About() {
           <Parallax offset={-30}>
             <ScrollReveal>
               <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
-                About
+                <TextScramble text="About" />
               </h3>
             </ScrollReveal>
           </Parallax>

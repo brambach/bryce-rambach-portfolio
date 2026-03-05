@@ -1,4 +1,5 @@
 import { ScrollReveal, Parallax } from "./ScrollReveal";
+import { TextScramble } from "./TextScramble";
 
 const row1 = ["Workato", "HiBob", "NetSuite", "Deputy", "API Design", "Webhooks", "React", "TypeScript"];
 const row2 = ["Node.js", "Tailwind CSS", "Next.js", "Systems Architecture", "Solutions Engineering", "Client Communication"];
@@ -35,7 +36,7 @@ export function Skills() {
           <Parallax offset={-30}>
             <ScrollReveal>
               <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
-                Skills &amp; Tech Stack
+                <TextScramble text="Skills & Tech Stack" />
               </h3>
             </ScrollReveal>
           </Parallax>

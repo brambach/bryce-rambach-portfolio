@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ScrollReveal, Parallax } from "./ScrollReveal";
+import { TextScramble } from "./TextScramble";
 
 const projects = [
   {
@@ -72,18 +73,68 @@ const projects = [
 ];
 
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [glarePos, setGlarePos] = useState({ x: 50, y: 50 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    const maxTilt = 8;
+    setTilt({
+      rotateX: (0.5 - y) * maxTilt,
+      rotateY: (x - 0.5) * maxTilt,
+    });
+    setGlarePos({ x: x * 100, y: y * 100 });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setTilt({ rotateX: 0, rotateY: 0 });
+    setIsHovering(false);
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovering(true);
+  }, []);
+
   return (
-    <div className="group relative h-full">
+    <motion.div
+      ref={cardRef}
+      className="group relative h-full"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      animate={{
+        rotateX: tilt.rotateX,
+        rotateY: tilt.rotateY,
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      style={{ perspective: 800, transformStyle: "preserve-3d" }}
+      data-cursor="card"
+    >
       {/* Accent gradient glow */}
       <div
         className={`absolute -inset-px rounded-4xl bg-gradient-to-br ${project.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}
       />
 
       <div
-        className={`relative h-full bg-white/3 backdrop-blur-xl border border-white/6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-10 md:p-12 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]`}
+        className={`relative h-full bg-white/3 backdrop-blur-xl border border-white/6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-10 md:p-12 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] overflow-hidden`}
       >
+        {/* Glare overlay */}
+        <div
+          className="absolute inset-0 rounded-4xl pointer-events-none transition-opacity duration-300"
+          style={{
+            opacity: isHovering ? 0.08 : 0,
+            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, white, transparent 60%)`,
+          }}
+        />
+
         {/* Header */}
-        <div className="flex items-start justify-between mb-2">
+        <div className="relative flex items-start justify-between mb-2">
           <h4 className="text-2xl font-semibold text-white">
             {project.title}
           </h4>
@@ -98,17 +149,17 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             </a>
           )}
         </div>
-        <p className="text-sm font-medium text-neutral-500 mb-6 tracking-wide">
+        <p className="relative text-sm font-medium text-neutral-500 mb-6 tracking-wide">
           {project.tagline}
         </p>
 
         {/* Description */}
-        <p className="text-neutral-400 font-light leading-relaxed mb-8">
+        <p className="relative text-neutral-400 font-light leading-relaxed mb-8">
           {project.description}
         </p>
 
         {/* Tech tags */}
-        <div className="flex flex-wrap gap-2 mt-auto">
+        <div className="relative flex flex-wrap gap-2 mt-auto">
           {project.tech.map((t) => (
             <span
               key={t}
@@ -119,7 +170,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -178,7 +229,7 @@ export function Portfolio() {
                 <div className="flex items-end justify-between mb-4">
                   <div>
                     <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
-                      Portfolio
+                      <TextScramble text="Portfolio" />
                     </h3>
                     <p className="mt-2 text-neutral-500 font-light leading-relaxed max-w-xs text-sm">
                       A few things I've built, broken, and shipped.
