@@ -41,10 +41,10 @@ function AnimatedCounter({ value, suffix, label }: { value: number; suffix: stri
 
   return (
     <div ref={ref} className="text-center">
-      <div className="text-4xl md:text-5xl font-bold text-blue-400 tabular-nums">
+      <div className="text-4xl md:text-5xl font-bold text-white tabular-nums">
         {count}{suffix}
       </div>
-      <div className="text-xs md:text-sm font-medium text-neutral-500 uppercase tracking-wider mt-2">
+      <div className="text-xs md:text-sm font-medium text-neutral-600 uppercase tracking-wider mt-2">
         {label}
       </div>
     </div>
@@ -54,38 +54,39 @@ function AnimatedCounter({ value, suffix, label }: { value: number; suffix: stri
 function MarqueeRow({ items, reverse = false, speed = 30 }: { items: string[]; reverse?: boolean; speed?: number }) {
   const doubled = [...items, ...items];
   const duration = items.length * speed / 10;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: "100px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="overflow-hidden mask-[linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+    <div ref={containerRef} className="overflow-hidden mask-[linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
       <div
         className={`flex gap-4 w-max ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}
-        style={{ animationDuration: `${duration}s` }}
+        style={{
+          animationDuration: `${duration}s`,
+          willChange: "transform",
+          animationPlayState: isVisible ? "running" : "paused",
+        }}
       >
         {doubled.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="shrink-0 text-sm font-mono font-medium text-neutral-400 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/8 whitespace-nowrap hover:border-white/20 hover:text-white transition-colors duration-300"
+            className="shrink-0 text-sm font-mono font-medium text-neutral-400 bg-white/[0.06] px-5 py-2.5 rounded-full border border-white/[0.08] whitespace-nowrap hover:border-white/20 hover:text-white transition-colors duration-300"
           >
             {item}
           </span>
         ))}
       </div>
-    </div>
-  );
-}
-
-function CircuitLine() {
-  return (
-    <div className="flex items-center justify-center py-6">
-      <svg width="100%" height="2" className="max-w-md" viewBox="0 0 400 2" fill="none" preserveAspectRatio="none">
-        <line x1="0" y1="1" x2="120" y2="1" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-        <circle cx="120" cy="1" r="2" fill="rgba(59,130,246,0.4)" />
-        <line x1="124" y1="1" x2="200" y2="1" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-        <circle cx="200" cy="1" r="3" fill="rgba(139,92,246,0.5)" />
-        <line x1="204" y1="1" x2="280" y2="1" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-        <circle cx="280" cy="1" r="2" fill="rgba(16,185,129,0.4)" />
-        <line x1="284" y1="1" x2="400" y2="1" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      </svg>
     </div>
   );
 }
@@ -116,10 +117,7 @@ export function Skills() {
         </div>
       </div>
 
-      {/* Circuit line */}
-      <ScrollReveal>
-        <CircuitLine />
-      </ScrollReveal>
+      <div className="py-4" />
 
       {/* Full-bleed marquee */}
       <ScrollReveal>

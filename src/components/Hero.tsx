@@ -3,70 +3,130 @@ import { motion, useReducedMotion } from "motion/react";
 const name = "Bryce Rambach";
 const taglineWords = ["I", "make", "systems", "talk", "to", "each", "other."];
 
-const nodes = [
-  { name: "HiBob", x: 50, y: 6, delay: 0 },
-  { name: "NetSuite", x: 90, y: 34, delay: 1.2 },
-  { name: "Workato", x: 78, y: 78, delay: 0.6 },
-  { name: "Deputy", x: 22, y: 78, delay: 1.8 },
-  { name: "React", x: 10, y: 34, delay: 2.4 },
+const codeLines = [
+  { tokens: [{ text: "const", color: "text-blue-400" }, { text: " sync", color: "text-white" }, { text: " = ", color: "text-neutral-500" }, { text: "await", color: "text-blue-400" }, { text: " connect", color: "text-emerald-400" }, { text: "(", color: "text-neutral-500" }] },
+  { tokens: [{ text: "  source", color: "text-neutral-400" }, { text: ":", color: "text-neutral-500" }, { text: " \"hibob\"", color: "text-amber-400" }, { text: ",", color: "text-neutral-500" }] },
+  { tokens: [{ text: "  target", color: "text-neutral-400" }, { text: ":", color: "text-neutral-500" }, { text: " \"netsuite\"", color: "text-amber-400" }, { text: ",", color: "text-neutral-500" }] },
+  { tokens: [{ text: "  events", color: "text-neutral-400" }, { text: ":", color: "text-neutral-500" }, { text: " [", color: "text-neutral-500" }, { text: "\"hire\"", color: "text-amber-400" }, { text: ", ", color: "text-neutral-500" }, { text: "\"terminate\"", color: "text-amber-400" }, { text: ", ", color: "text-neutral-500" }, { text: "\"update\"", color: "text-amber-400" }, { text: "]", color: "text-neutral-500" }] },
+  { tokens: [{ text: ")", color: "text-neutral-500" }] },
+  { tokens: [] },
+  { tokens: [{ text: "sync", color: "text-white" }, { text: ".", color: "text-neutral-500" }, { text: "on", color: "text-emerald-400" }, { text: "(", color: "text-neutral-500" }, { text: "\"complete\"", color: "text-amber-400" }, { text: ", ", color: "text-neutral-500" }, { text: "(", color: "text-neutral-500" }, { text: "result", color: "text-neutral-400" }, { text: ")", color: "text-neutral-500" }, { text: " =>", color: "text-blue-400" }, { text: " {", color: "text-neutral-500" }] },
+  { tokens: [{ text: "  console", color: "text-white" }, { text: ".", color: "text-neutral-500" }, { text: "log", color: "text-emerald-400" }, { text: "(", color: "text-neutral-500" }, { text: "`", color: "text-amber-400" }, { text: "synced ", color: "text-amber-400" }, { text: "${", color: "text-neutral-500" }, { text: "result.count", color: "text-white" }, { text: "}", color: "text-neutral-500" }, { text: " records", color: "text-amber-400" }, { text: "`", color: "text-amber-400" }, { text: ")", color: "text-neutral-500" }] },
+  { tokens: [{ text: "})", color: "text-neutral-500" }] },
 ];
 
-function IntegrationNetwork() {
+function CodeBlock() {
   return (
-    <div className="relative w-full aspect-square max-w-md mx-auto">
-      {/* Connection lines — animated dashes suggest data flow */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" fill="none">
-        {nodes.map((node, i) => (
-          <line
-            key={i}
-            x1="50"
-            y1="50"
-            x2={node.x}
-            y2={node.y}
-            stroke="rgba(255,255,255,0.1)"
-            strokeWidth="0.25"
-            strokeDasharray="1.5 2"
-          >
-            <animate
-              attributeName="stroke-dashoffset"
-              values="0;-3.5"
-              dur={`${2.5 + i * 0.4}s`}
-              repeatCount="indefinite"
-            />
-          </line>
-        ))}
-        {/* Subtle orbital ring */}
-        <circle cx="50" cy="50" r="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.25" fill="none" />
-        <circle cx="50" cy="50" r="42" stroke="rgba(255,255,255,0.025)" strokeWidth="0.25" fill="none" strokeDasharray="2 3" />
-      </svg>
-
-      {/* Center hub */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="relative">
-          <div className="absolute -inset-4 bg-blue-500/15 blur-2xl rounded-full" />
-          <div className="relative w-14 h-14 rounded-2xl bg-white/[0.06] border border-white/[0.12] flex items-center justify-center backdrop-blur-sm">
-            <span className="text-base font-bold text-white/70 tracking-tight font-display">BR</span>
+    <div className="w-full max-w-lg mx-auto">
+      <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+        {/* Window chrome */}
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]">
+          <div className="flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
           </div>
+          <span className="text-xs font-mono text-neutral-600 ml-2">integration.ts</span>
+        </div>
+
+        {/* Code content */}
+        <div className="p-5 font-mono text-sm leading-relaxed">
+          {codeLines.map((line, lineIdx) => (
+            <motion.div
+              key={lineIdx}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: 0.3,
+                delay: 1.2 + lineIdx * 0.15,
+                ease: [0.21, 0.47, 0.32, 0.98],
+              }}
+              className="whitespace-pre"
+            >
+              <span className="text-neutral-700 select-none mr-4 inline-block w-4 text-right text-xs">
+                {lineIdx + 1}
+              </span>
+              {line.tokens.length === 0 ? (
+                <span>&nbsp;</span>
+              ) : (
+                line.tokens.map((token, tokenIdx) => (
+                  <span key={tokenIdx} className={token.color}>
+                    {token.text}
+                  </span>
+                ))
+              )}
+            </motion.div>
+          ))}
+
+          {/* Blinking cursor */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2.8 }}
+          >
+            <span className="text-neutral-700 select-none mr-4 inline-block w-4 text-right text-xs">
+              {codeLines.length + 1}
+            </span>
+            <motion.span
+              animate={{ opacity: [1, 0] }}
+              transition={{ duration: 1, repeat: Infinity, ease: "steps(1)" }}
+              className="inline-block w-2 h-4 bg-blue-400/60 align-middle"
+            />
+          </motion.div>
         </div>
       </div>
 
-      {/* Platform nodes */}
-      {nodes.map((node) => (
-        <div
-          key={node.name}
-          className="absolute animate-float"
-          style={{
-            left: `${node.x}%`,
-            top: `${node.y}%`,
-            transform: "translate(-50%, -50%)",
-            animationDelay: `${node.delay}s`,
-          }}
-        >
-          <div className="px-4 py-2 bg-white/[0.05] border border-white/[0.12] rounded-full text-xs font-medium text-neutral-400 backdrop-blur-sm whitespace-nowrap hover:border-white/25 hover:text-neutral-200 transition-colors duration-300">
-            {node.name}
+      {/* Status line below the editor */}
+      <motion.div
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 3.0, duration: 0.4 }}
+        className="mt-3 flex items-center gap-2 px-2"
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+        <span className="text-xs font-mono text-neutral-600">
+          847 records synced
+        </span>
+      </motion.div>
+    </div>
+  );
+}
+
+function CodeBlockStatic() {
+  return (
+    <div className="w-full max-w-lg mx-auto">
+      <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]">
+          <div className="flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
           </div>
+          <span className="text-xs font-mono text-neutral-600 ml-2">integration.ts</span>
         </div>
-      ))}
+        <div className="p-5 font-mono text-sm leading-relaxed">
+          {codeLines.map((line, lineIdx) => (
+            <div key={lineIdx} className="whitespace-pre">
+              <span className="text-neutral-700 select-none mr-4 inline-block w-4 text-right text-xs">
+                {lineIdx + 1}
+              </span>
+              {line.tokens.length === 0 ? (
+                <span>&nbsp;</span>
+              ) : (
+                line.tokens.map((token, tokenIdx) => (
+                  <span key={tokenIdx} className={token.color}>
+                    {token.text}
+                  </span>
+                ))
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-3 flex items-center gap-2 px-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+        <span className="text-xs font-mono text-neutral-600">847 records synced</span>
+      </div>
     </div>
   );
 }
@@ -100,6 +160,9 @@ export function Hero() {
               <span className="text-white/10">|</span>
               <span>summer 2026</span>
             </div>
+          </div>
+          <div className="hidden lg:block">
+            <CodeBlockStatic />
           </div>
         </div>
       </section>
@@ -188,14 +251,14 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right column — integration network */}
+        {/* Right column — code block */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, delay: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="hidden lg:flex items-center justify-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="hidden lg:block"
         >
-          <IntegrationNetwork />
+          <CodeBlock />
         </motion.div>
       </div>
     </section>

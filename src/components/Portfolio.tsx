@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useReducedMotion, useMotionValueEvent } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ScrollReveal, Parallax } from "./ScrollReveal";
@@ -136,7 +136,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
       />
 
       <div
-        className={`relative h-full bg-white/3 backdrop-blur-xl border border-white/6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-10 md:p-12 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] overflow-hidden`}
+        className={`relative h-full bg-white/[0.04] border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-10 md:p-12 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] overflow-hidden`}
       >
         {/* Colored accent line at top — solid */}
         <div className={`absolute top-0 left-0 right-0 h-[3px] ${project.accentLine} opacity-50 rounded-t-4xl`} />
@@ -186,7 +186,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
           {project.tech.map((t) => (
             <span
               key={t}
-              className="text-xs font-mono font-medium text-neutral-500 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10"
+              className="text-xs font-mono font-medium text-neutral-500 bg-white/[0.06] px-3 py-1.5 rounded-full border border-white/[0.08]"
             >
               {t}
             </span>
@@ -199,20 +199,36 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
 
 export function Portfolio() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
+  const [scrollRange, setScrollRange] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Map vertical scroll to horizontal translation
-  // We need to move (n-1) cards worth of width to the left
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["0%", `-${((projects.length - 1) / projects.length) * 100}%`]
-  );
+  // Measure actual scrollable width using ResizeObserver
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const measure = () => {
+      const trackWidth = track.scrollWidth;
+      const viewportWidth = window.innerWidth;
+      setScrollRange(trackWidth - viewportWidth + 48); // 48px = px-6 padding on each side
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  // Map vertical scroll to pixel-based horizontal translation
+  const x = useTransform(scrollYProgress, [0, 1], [0, -scrollRange]);
 
   // Progress bar width
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
@@ -249,7 +265,7 @@ export function Portfolio() {
   return (
     <section id="portfolio" className="px-6 md:px-12">
       {/* This tall container is what we scroll through — height drives horizontal movement */}
-      <div ref={containerRef} style={{ height: `${projects.length * 60}vh` }} className="relative">
+      <div ref={containerRef} style={{ height: `${projects.length * 70}vh` }} className="relative">
         <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden py-24">
           {/* Header + progress */}
           <div className="mb-8 px-0">
@@ -267,13 +283,14 @@ export function Portfolio() {
                   {/* Progress indicator */}
                   <div className="hidden sm:flex items-center gap-3 text-xs font-medium text-neutral-600">
                     <span className="tabular-nums">{currentIndex} / {projects.length}</span>
-                    <div className="w-24 h-0.5 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div
-                        className="h-full bg-white/40 rounded-full"
-                        style={{ width: progressWidth }}
-                      />
-                    </div>
                   </div>
+                </div>
+                {/* Full-width progress bar */}
+                <div className="w-full h-px bg-white/[0.06] rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-blue-400/60 rounded-full"
+                    style={{ width: progressWidth }}
+                  />
                 </div>
               </ScrollReveal>
             </Parallax>
@@ -281,6 +298,7 @@ export function Portfolio() {
 
           {/* Horizontal scrolling cards */}
           <motion.div
+            ref={trackRef}
             style={{ x }}
             className="flex gap-6"
           >

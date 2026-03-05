@@ -33,11 +33,11 @@ export function About() {
         {/* Block 3 — Closing line */}
         <ScrollReveal slideFrom={-1}>
           <p className="text-2xl md:text-3xl font-light text-white/80">
-            Currently based in{" "}
+            Based in San Diego, headed to{" "}
             <span className="text-white font-medium">
               New York City
-            </span>
-            .
+            </span>{" "}
+            summer 2026.
           </p>
         </ScrollReveal>
       </div>
