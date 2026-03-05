@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion, useMotionValueEvent } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ScrollReveal, Parallax } from "./ScrollReveal";
 import { TextScramble } from "./TextScramble";
@@ -13,6 +13,8 @@ const projects = [
     tech: ["React", "Next.js", "Tailwind CSS", "Vercel"],
     accent: "from-blue-500/20 to-cyan-500/20",
     accentBorder: "hover:border-blue-300/60",
+    accentLine: "from-blue-500 to-cyan-500",
+    dotColor: "bg-blue-400",
     url: "https://brycedigital.io",
   },
   {
@@ -23,6 +25,8 @@ const projects = [
     tech: ["Workato", "REST APIs", "HiBob", "NetSuite"],
     accent: "from-emerald-500/20 to-teal-500/20",
     accentBorder: "hover:border-emerald-300/60",
+    accentLine: "from-emerald-500 to-teal-500",
+    dotColor: "bg-emerald-400",
   },
   {
     title: "Deputy Workforce Automation",
@@ -32,6 +36,8 @@ const projects = [
     tech: ["Workato", "Webhooks", "Deputy", "API Design"],
     accent: "from-purple-500/20 to-violet-500/20",
     accentBorder: "hover:border-purple-300/60",
+    accentLine: "from-purple-500 to-violet-500",
+    dotColor: "bg-purple-400",
   },
   {
     title: "HiBob + MYOB Sync",
@@ -41,6 +47,8 @@ const projects = [
     tech: ["Workato", "REST APIs", "HiBob", "MYOB"],
     accent: "from-rose-500/20 to-pink-500/20",
     accentBorder: "hover:border-rose-300/60",
+    accentLine: "from-rose-500 to-pink-500",
+    dotColor: "bg-rose-400",
   },
   {
     title: "HiBob + KeyPay Sync",
@@ -50,6 +58,8 @@ const projects = [
     tech: ["Workato", "REST APIs", "HiBob", "KeyPay"],
     accent: "from-sky-500/20 to-indigo-500/20",
     accentBorder: "hover:border-sky-300/60",
+    accentLine: "from-sky-500 to-indigo-500",
+    dotColor: "bg-sky-400",
   },
   {
     title: "Digital Directions Portal",
@@ -59,6 +69,8 @@ const projects = [
     tech: ["React", "Node.js", "REST APIs", "Tailwind CSS"],
     accent: "from-teal-500/20 to-cyan-500/20",
     accentBorder: "hover:border-teal-300/60",
+    accentLine: "from-teal-500 to-cyan-500",
+    dotColor: "bg-teal-400",
   },
   {
     title: "This Portfolio",
@@ -68,11 +80,13 @@ const projects = [
     tech: ["React", "TypeScript", "Tailwind v4", "Motion"],
     accent: "from-amber-500/20 to-orange-500/20",
     accentBorder: "hover:border-amber-300/60",
+    accentLine: "from-amber-500 to-orange-500",
+    dotColor: "bg-amber-400",
     url: "#",
   },
 ];
 
-function ProjectCard({ project }: { project: (typeof projects)[number] }) {
+function ProjectCard({ project, index }: { project: (typeof projects)[number]; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50 });
@@ -124,6 +138,14 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
       <div
         className={`relative h-full bg-white/3 backdrop-blur-xl border border-white/6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-10 md:p-12 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] overflow-hidden`}
       >
+        {/* Colored accent line at top */}
+        <div className={`absolute top-0 left-8 right-8 h-0.5 bg-linear-to-r ${project.accentLine} opacity-40`} />
+
+        {/* Ghost number */}
+        <span className="absolute top-6 right-8 text-7xl font-black text-white/3 select-none pointer-events-none leading-none">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+
         {/* Glare overlay */}
         <div
           className="absolute inset-0 rounded-4xl pointer-events-none transition-opacity duration-300"
@@ -149,7 +171,8 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             </a>
           )}
         </div>
-        <p className="relative text-sm font-medium text-neutral-500 mb-6 tracking-wide">
+        <p className="relative text-sm font-medium text-neutral-500 mb-6 tracking-wide flex items-center gap-2">
+          <span className={`inline-block w-1.5 h-1.5 rounded-full ${project.dotColor}`} />
           {project.tagline}
         </p>
 
@@ -194,6 +217,12 @@ export function Portfolio() {
   // Progress bar width
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
+  // Fraction counter
+  const [currentIndex, setCurrentIndex] = useState(1);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    setCurrentIndex(Math.min(Math.floor(v * projects.length) + 1, projects.length));
+  });
+
   // Fallback for reduced motion: normal vertical layout
   if (reducedMotion) {
     return (
@@ -207,9 +236,9 @@ export function Portfolio() {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {projects.map((project) => (
+          {projects.map((project, i) => (
             <div key={project.title}>
-              <ProjectCard project={project} />
+              <ProjectCard project={project} index={i} />
             </div>
           ))}
         </div>
@@ -237,7 +266,7 @@ export function Portfolio() {
                   </div>
                   {/* Progress indicator */}
                   <div className="hidden sm:flex items-center gap-3 text-xs font-medium text-neutral-600">
-                    <span>Scroll</span>
+                    <span className="tabular-nums">{currentIndex} / {projects.length}</span>
                     <div className="w-24 h-0.5 bg-white/10 rounded-full overflow-hidden">
                       <motion.div
                         className="h-full bg-white/40 rounded-full"
@@ -255,12 +284,12 @@ export function Portfolio() {
             style={{ x }}
             className="flex gap-6"
           >
-            {projects.map((project) => (
+            {projects.map((project, i) => (
               <div
                 key={project.title}
-                className="w-[80vw] max-w-[600px] shrink-0"
+                className={`w-[80vw] max-w-[600px] shrink-0 ${i % 2 === 1 ? "mt-8" : "mt-0"}`}
               >
-                <ProjectCard project={project} />
+                <ProjectCard project={project} index={i} />
               </div>
             ))}
           </motion.div>
