@@ -1,34 +1,45 @@
-import { ScrollReveal, Parallax } from "./ScrollReveal";
-import { TextScramble } from "./TextScramble";
+import { ScrollReveal } from "./ScrollReveal";
 
 export function About() {
   return (
-    <section id="about" className="py-24 md:py-32">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
-        <div className="md:col-span-4">
-          <Parallax offset={-30}>
-            <ScrollReveal>
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
-                <TextScramble text="About" />
-              </h3>
-            </ScrollReveal>
-          </Parallax>
-        </div>
-        <div className="md:col-span-8">
-          <ScrollReveal slideFrom={1}>
-            <div className="bg-white/3 backdrop-blur-xl border border-white/6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-8 md:p-12 text-xl md:text-2xl font-light text-neutral-300 leading-relaxed space-y-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]">
-              <p>
-                I'm a 21-year-old Computer Science student at San Diego State University, graduating in May 2026. My focus is on bridging the gap between complex technical systems and real-world business needs.
-              </p>
-              <p>
-                As an Integration Specialist, I build enterprise HRIS integrations—connecting platforms like HiBob, NetSuite, Deputy, and Workato to create efficient, automated workflows that save companies time and reduce errors.
-              </p>
-              <p>
-                Currently, I'm targeting Solutions Engineer roles in New York City. I thrive in environments where I can leverage both my deep technical expertise and strategic problem-solving skills to drive business value.
-              </p>
-            </div>
-          </ScrollReveal>
-        </div>
+    <section id="about" className="py-32 md:py-48">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 space-y-24 md:space-y-32">
+        {/* Block 1 — Big statement */}
+        <ScrollReveal slideFrom={-1}>
+          <p className="text-3xl md:text-5xl font-light text-white/90 leading-snug max-w-4xl">
+            I bridge the gap between complex technical systems and real-world
+            business needs — turning integrations into competitive advantages.
+          </p>
+        </ScrollReveal>
+
+        {/* Block 2 — Detail, right-aligned */}
+        <ScrollReveal slideFrom={1}>
+          <div className="border-l-2 border-white/10 pl-8 ml-auto max-w-2xl">
+            <p className="text-lg md:text-xl font-light text-neutral-400 leading-relaxed mb-6">
+              As an Integration Specialist, I build enterprise HRIS
+              integrations — connecting platforms like HiBob, NetSuite, Deputy,
+              and Workato to create efficient, automated workflows that save
+              companies time and reduce errors.
+            </p>
+            <p className="text-lg md:text-xl font-light text-neutral-400 leading-relaxed">
+              I'm a Computer Science student at San Diego State University,
+              graduating in May 2026, targeting Solutions Engineer roles where I
+              can leverage deep technical expertise and strategic
+              problem-solving.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        {/* Block 3 — Closing line */}
+        <ScrollReveal slideFrom={-1}>
+          <p className="text-2xl md:text-3xl font-light text-white/80">
+            Currently based in{" "}
+            <span className="text-gradient-accent font-medium">
+              New York City
+            </span>
+            .
+          </p>
+        </ScrollReveal>
       </div>
     </section>
   );
