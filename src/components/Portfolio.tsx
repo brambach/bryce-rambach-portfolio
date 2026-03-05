@@ -4,6 +4,11 @@ import { ArrowUpRight } from "lucide-react";
 import { ScrollReveal, Parallax } from "./ScrollReveal";
 import { TextScramble } from "./TextScramble";
 
+interface ProjectNode {
+  label: string;
+  sublabel: string;
+}
+
 const projects = [
   {
     title: "Bryce Digital",
@@ -11,9 +16,13 @@ const projects = [
     description:
       "My own studio. I design and build high-performance sites for small businesses and creators — from first pixel to live deploy. No templates, no page builders, just clean code.",
     tech: ["React", "Next.js", "Tailwind CSS", "Vercel"],
+    source: { label: "Design", sublabel: "Figma" },
+    target: { label: "Deploy", sublabel: "Vercel" },
+    flowLabel: "components",
     accentGlow: "bg-blue-500/15",
     accentBorder: "hover:border-blue-400/40",
     accentLine: "bg-blue-500",
+    accentColor: "#3b82f6",
     dotColor: "bg-blue-400",
     url: "https://brycedigital.io",
   },
@@ -23,9 +32,13 @@ const projects = [
     description:
       "Two-way sync between HiBob and NetSuite. When someone joins, gets promoted, or leaves — HR, payroll, and finance all know instantly. Killed hours of manual entry per week.",
     tech: ["Workato", "REST APIs", "HiBob", "NetSuite"],
+    source: { label: "HiBob", sublabel: "HRIS" },
+    target: { label: "NetSuite", sublabel: "ERP" },
+    flowLabel: "employee data",
     accentGlow: "bg-emerald-500/15",
     accentBorder: "hover:border-emerald-400/40",
     accentLine: "bg-emerald-500",
+    accentColor: "#10b981",
     dotColor: "bg-emerald-400",
   },
   {
@@ -34,9 +47,13 @@ const projects = [
     description:
       "Connected Deputy scheduling data to payroll and HRIS in real-time. Onboarding that used to take three systems and a spreadsheet now just... happens.",
     tech: ["Workato", "Webhooks", "Deputy", "API Design"],
+    source: { label: "Deputy", sublabel: "Scheduling" },
+    target: { label: "Payroll", sublabel: "HRIS" },
+    flowLabel: "schedules",
     accentGlow: "bg-purple-500/15",
     accentBorder: "hover:border-purple-400/40",
     accentLine: "bg-purple-500",
+    accentColor: "#a855f7",
     dotColor: "bg-purple-400",
   },
   {
@@ -45,9 +62,13 @@ const projects = [
     description:
       "Piped employee data from HiBob straight into MYOB accounting. Payroll and financial records stay locked in sync — no one touches a spreadsheet.",
     tech: ["Workato", "REST APIs", "HiBob", "MYOB"],
+    source: { label: "HiBob", sublabel: "HRIS" },
+    target: { label: "MYOB", sublabel: "Accounting" },
+    flowLabel: "payroll data",
     accentGlow: "bg-rose-500/15",
     accentBorder: "hover:border-rose-400/40",
     accentLine: "bg-rose-500",
+    accentColor: "#f43f5e",
     dotColor: "bg-rose-400",
   },
   {
@@ -56,9 +77,13 @@ const projects = [
     description:
       "Automated the entire employee lifecycle from HiBob to KeyPay. New hire? Payroll's already set up before they finish orientation.",
     tech: ["Workato", "REST APIs", "HiBob", "KeyPay"],
+    source: { label: "HiBob", sublabel: "HRIS" },
+    target: { label: "KeyPay", sublabel: "Payroll" },
+    flowLabel: "employee records",
     accentGlow: "bg-sky-500/15",
     accentBorder: "hover:border-sky-400/40",
     accentLine: "bg-sky-500",
+    accentColor: "#0ea5e9",
     dotColor: "bg-sky-400",
   },
   {
@@ -67,9 +92,13 @@ const projects = [
     description:
       "Built the internal tool my team actually wanted — track client integrations, manage project status, and stop losing docs in Slack threads.",
     tech: ["React", "Node.js", "REST APIs", "Tailwind CSS"],
+    source: { label: "Client", sublabel: "Request" },
+    target: { label: "Portal", sublabel: "Dashboard" },
+    flowLabel: "project data",
     accentGlow: "bg-teal-500/15",
     accentBorder: "hover:border-teal-400/40",
     accentLine: "bg-teal-500",
+    accentColor: "#14b8a6",
     dotColor: "bg-teal-400",
   },
   {
@@ -78,19 +107,155 @@ const projects = [
     description:
       "You're scrolling through it. Built from scratch — scroll-driven horizontal gallery, 3D card tilts, animated counters, and way too many hover states. Had fun with this one.",
     tech: ["React", "TypeScript", "Tailwind v4", "Motion"],
+    source: { label: "Code", sublabel: "React" },
+    target: { label: "Browser", sublabel: "You" },
+    flowLabel: "pixels",
     accentGlow: "bg-amber-500/15",
     accentBorder: "hover:border-amber-400/40",
     accentLine: "bg-amber-500",
+    accentColor: "#f59e0b",
     dotColor: "bg-amber-400",
     url: "#",
   },
 ];
+
+const FLOW_PATH = "M 50,50 C 150,20 310,20 410,50";
+
+function IntegrationDiagram({
+  source,
+  target,
+  flowLabel,
+  accentColor,
+  isActive,
+  reducedMotion,
+}: {
+  source: ProjectNode;
+  target: ProjectNode;
+  flowLabel: string;
+  accentColor: string;
+  isActive: boolean;
+  reducedMotion: boolean | null;
+}) {
+  return (
+    <div className="relative h-[100px] mb-4">
+      {/* SVG connection line + particles */}
+      <svg
+        viewBox="0 0 460 100"
+        preserveAspectRatio="xMidYMid meet"
+        className="absolute inset-0 w-full h-full"
+        aria-hidden="true"
+      >
+        {/* Connection line */}
+        <path
+          d={FLOW_PATH}
+          fill="none"
+          stroke={accentColor}
+          strokeWidth="1.5"
+          strokeDasharray="6 4"
+          className="transition-opacity duration-400"
+          style={{
+            opacity: isActive ? 0.5 : 0.15,
+            animation: isActive && !reducedMotion ? "dash-flow 1s linear infinite" : "none",
+          }}
+        />
+
+        {/* Flow label — centered above the arc */}
+        <text
+          x="230"
+          y="14"
+          textAnchor="middle"
+          fill={accentColor}
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "9px",
+            letterSpacing: "0.05em",
+            opacity: isActive ? 0.6 : (reducedMotion ? 0.4 : 0),
+            transition: "opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s",
+          }}
+        >
+          {flowLabel}
+        </text>
+
+        {/* Particles — only render if not reduced motion */}
+        {!reducedMotion && [0, 0.8, 1.6].map((delay, i) => (
+          <circle
+            key={i}
+            r="2.5"
+            fill={accentColor}
+            className="transition-opacity duration-500"
+            style={{
+              opacity: isActive ? 0.8 : 0,
+              transitionDelay: "0.1s",
+            }}
+          >
+            <animateMotion
+              dur="2.5s"
+              repeatCount="indefinite"
+              path={FLOW_PATH}
+              begin={`${delay}s`}
+            />
+          </circle>
+        ))}
+      </svg>
+
+      {/* Source node — positioned over SVG left side */}
+      <div
+        className="absolute left-0 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5 w-[70px]"
+      >
+        <div
+          className="w-[10px] h-[10px] rounded-sm bg-white/[0.06] border transition-all duration-300"
+          style={{
+            borderColor: isActive ? `${accentColor}66` : "rgba(255,255,255,0.08)",
+            boxShadow: isActive ? `0 0 12px ${accentColor}30` : "none",
+          }}
+        />
+        <span
+          className="font-mono text-xs transition-colors duration-300"
+          style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.4)" }}
+        >
+          {source.label}
+        </span>
+        <span className="font-mono text-[9px] text-neutral-600 uppercase tracking-wider leading-none">
+          {source.sublabel}
+        </span>
+      </div>
+
+      {/* Target node — positioned over SVG right side */}
+      <div
+        className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5 w-[70px]"
+      >
+        <div
+          className="w-[10px] h-[10px] rounded-sm bg-white/[0.06] border transition-all duration-300"
+          style={{
+            borderColor: isActive ? `${accentColor}66` : "rgba(255,255,255,0.08)",
+            boxShadow: isActive ? `0 0 12px ${accentColor}30` : "none",
+          }}
+        />
+        <span
+          className="font-mono text-xs transition-colors duration-300"
+          style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.4)" }}
+        >
+          {target.label}
+        </span>
+        <span className="font-mono text-[9px] text-neutral-600 uppercase tracking-wider leading-none">
+          {target.sublabel}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function ProjectCard({ project, index }: { project: (typeof projects)[number]; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const el = cardRef.current;
@@ -115,6 +280,9 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
     setIsHovering(true);
   }, []);
 
+  // On touch devices, diagram is always subtly active
+  const diagramActive = isTouchDevice || isHovering;
+
   return (
     <motion.div
       ref={cardRef}
@@ -136,12 +304,12 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
       />
 
       <div
-        className={`relative h-full bg-white/[0.04] border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-10 md:p-12 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] overflow-hidden`}
+        className={`relative h-full bg-white/[0.04] border border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-8 md:p-10 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] overflow-hidden`}
       >
-        {/* Colored accent line at top — solid */}
+        {/* Colored accent line at top */}
         <div className={`absolute top-0 left-0 right-0 h-[3px] ${project.accentLine} opacity-50 rounded-t-4xl`} />
 
-        {/* Ghost number — more visible */}
+        {/* Ghost number */}
         <span className="absolute top-6 right-8 text-8xl font-black text-white/[0.06] select-none pointer-events-none leading-none font-display">
           {String(index + 1).padStart(2, "0")}
         </span>
@@ -153,6 +321,16 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
             opacity: isHovering ? 0.08 : 0,
             background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, white, transparent 60%)`,
           }}
+        />
+
+        {/* Integration Diagram */}
+        <IntegrationDiagram
+          source={project.source}
+          target={project.target}
+          flowLabel={project.flowLabel}
+          accentColor={project.accentColor}
+          isActive={diagramActive}
+          reducedMotion={reducedMotion}
         />
 
         {/* Header */}
