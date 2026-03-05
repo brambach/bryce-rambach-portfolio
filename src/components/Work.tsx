@@ -1,4 +1,4 @@
-import { FadeIn } from "./FadeIn";
+import { ScrollReveal, Parallax } from "./ScrollReveal";
 
 const experiences = [
   {
@@ -22,16 +22,21 @@ export function Work() {
     <section id="work" className="py-24 md:py-32 border-t border-white/5">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
         <div className="md:col-span-4">
-          <FadeIn>
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
-              Work &amp; Experience
-            </h3>
-          </FadeIn>
+          <Parallax offset={-30}>
+            <ScrollReveal>
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
+                Work &amp; Experience
+              </h3>
+            </ScrollReveal>
+          </Parallax>
         </div>
         <div className="md:col-span-8">
           <div className="space-y-8">
             {experiences.map((exp, index) => (
-              <FadeIn key={index} delay={0.1 + index * 0.1}>
+              <div key={index}>
+              <ScrollReveal
+                slideFrom={index % 2 === 0 ? 1 : -1}
+              >
                 <div className="group relative bg-white/3 backdrop-blur-xl border border-white/6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-8 md:p-10 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]">
                   <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-4">
                     <h4 className="text-xl font-medium text-white">
@@ -48,7 +53,8 @@ export function Work() {
                     {exp.description}
                   </p>
                 </div>
-              </FadeIn>
+              </ScrollReveal>
+              </div>
             ))}
           </div>
         </div>
