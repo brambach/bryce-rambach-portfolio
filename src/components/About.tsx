@@ -7,8 +7,8 @@ export function About() {
         {/* Block 1 — Big statement with serif */}
         <ScrollReveal slideFrom={-1}>
           <p className="text-3xl md:text-5xl font-display italic text-white/90 leading-snug max-w-4xl">
-            I bridge the gap between complex technical systems and real-world
-            business needs — turning integrations into competitive advantages.
+            Every company I work with has the same problem — great tools that
+            don't talk to each other. I build the integrations that fix that.
           </p>
         </ScrollReveal>
 
@@ -16,16 +16,16 @@ export function About() {
         <ScrollReveal slideFrom={1}>
           <div className="border-l-2 border-white/10 pl-8 ml-auto max-w-2xl">
             <p className="text-lg md:text-xl font-light text-neutral-400 leading-relaxed mb-6">
-              As an Integration Specialist, I build enterprise HRIS
-              integrations — connecting platforms like HiBob, NetSuite, Deputy,
-              and Workato to create efficient, automated workflows that save
-              companies time and reduce errors.
+              Day-to-day, I wire up enterprise platforms — HiBob, NetSuite,
+              Deputy, Workato — building the automations that kill manual data
+              entry and keep everything in sync. Employee joins in HR? Payroll,
+              scheduling, and finance all update automatically.
             </p>
             <p className="text-lg md:text-xl font-light text-neutral-400 leading-relaxed">
-              I'm a Computer Science student at San Diego State University,
-              graduating in May 2026, targeting Solutions Engineer roles where I
-              can leverage deep technical expertise and strategic
-              problem-solving.
+              Finishing my CS degree at San Diego State, graduating May 2026.
+              Targeting Solutions Engineer roles where I can go deep on
+              technical problems and work directly with the people who need
+              them solved.
             </p>
           </div>
         </ScrollReveal>

@@ -64,7 +64,7 @@ function MarqueeRow({ items, reverse = false, speed = 30 }: { items: string[]; r
         {doubled.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="shrink-0 text-sm font-medium text-neutral-400 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/8 whitespace-nowrap hover:border-white/20 hover:text-white transition-colors duration-300"
+            className="shrink-0 text-sm font-mono font-medium text-neutral-400 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/8 whitespace-nowrap hover:border-white/20 hover:text-white transition-colors duration-300"
           >
             {item}
           </span>

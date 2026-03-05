@@ -3,19 +3,19 @@ import { TextScramble } from "./TextScramble";
 
 const experiences = [
   {
-    role: "Enterprise HRIS Integrations",
-    company: "Various Clients",
+    role: "Integration Specialist",
+    company: "Digital Directions",
     period: "2023 - Present",
     description:
-      "Building robust integrations between platforms like HiBob, NetSuite, Deputy, and Workato. Translating complex business requirements into technical solutions that reduce manual data entry and improve data integrity.",
+      "I'm the person they call when HiBob needs to talk to NetSuite, or Deputy needs to feed payroll. Building the automations that make enterprise platforms actually work together — so nobody has to copy-paste between tabs ever again.",
     accent: "blue",
   },
   {
-    role: "Computer Science Student",
+    role: "Computer Science, B.S.",
     company: "San Diego State University",
-    period: "Graduating May 2026",
+    period: "May 2026",
     description:
-      "Pursuing a degree in Computer Science with a focus on software engineering principles, algorithms, and systems architecture.",
+      "Wrapping up my CS degree with a focus on systems architecture and software engineering. The theory is solid — but honestly, I learned more shipping real integrations than any textbook could teach.",
     accent: "purple",
   },
 ];

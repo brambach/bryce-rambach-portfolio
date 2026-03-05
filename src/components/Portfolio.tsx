@@ -9,7 +9,7 @@ const projects = [
     title: "Bryce Digital",
     tagline: "My web development studio",
     description:
-      "Founded a freelance web studio building modern, high-performance sites for small businesses and creators. Full-stack development from design to deployment.",
+      "My own studio. I design and build high-performance sites for small businesses and creators — from first pixel to live deploy. No templates, no page builders, just clean code.",
     tech: ["React", "Next.js", "Tailwind CSS", "Vercel"],
     accentGlow: "bg-blue-500/15",
     accentBorder: "hover:border-blue-400/40",
@@ -21,7 +21,7 @@ const projects = [
     title: "HiBob + NetSuite Sync",
     tagline: "Enterprise HRIS integration",
     description:
-      "Built a bidirectional sync between HiBob and NetSuite, automating employee lifecycle events across HR and finance. Eliminated hours of manual data entry per week.",
+      "Two-way sync between HiBob and NetSuite. When someone joins, gets promoted, or leaves — HR, payroll, and finance all know instantly. Killed hours of manual entry per week.",
     tech: ["Workato", "REST APIs", "HiBob", "NetSuite"],
     accentGlow: "bg-emerald-500/15",
     accentBorder: "hover:border-emerald-400/40",
@@ -32,7 +32,7 @@ const projects = [
     title: "Deputy Workforce Automation",
     tagline: "Scheduling + payroll pipeline",
     description:
-      "Designed an integration pipeline connecting Deputy scheduling data with payroll and HRIS systems, reducing reconciliation errors and streamlining onboarding workflows.",
+      "Connected Deputy scheduling data to payroll and HRIS in real-time. Onboarding that used to take three systems and a spreadsheet now just... happens.",
     tech: ["Workato", "Webhooks", "Deputy", "API Design"],
     accentGlow: "bg-purple-500/15",
     accentBorder: "hover:border-purple-400/40",
@@ -43,7 +43,7 @@ const projects = [
     title: "HiBob + MYOB Sync",
     tagline: "HR to accounting automation",
     description:
-      "Integrated HiBob with MYOB to automate the flow of employee data into accounting workflows, ensuring payroll and financial records stay in sync without manual intervention.",
+      "Piped employee data from HiBob straight into MYOB accounting. Payroll and financial records stay locked in sync — no one touches a spreadsheet.",
     tech: ["Workato", "REST APIs", "HiBob", "MYOB"],
     accentGlow: "bg-rose-500/15",
     accentBorder: "hover:border-rose-400/40",
@@ -54,7 +54,7 @@ const projects = [
     title: "HiBob + KeyPay Sync",
     tagline: "HRIS to payroll integration",
     description:
-      "Built an automated sync between HiBob and KeyPay, streamlining employee onboarding and payroll processing by eliminating duplicate data entry across systems.",
+      "Automated the entire employee lifecycle from HiBob to KeyPay. New hire? Payroll's already set up before they finish orientation.",
     tech: ["Workato", "REST APIs", "HiBob", "KeyPay"],
     accentGlow: "bg-sky-500/15",
     accentBorder: "hover:border-sky-400/40",
@@ -65,7 +65,7 @@ const projects = [
     title: "Digital Directions Portal",
     tagline: "Internal client management tool",
     description:
-      "Developed an internal portal for Digital Directions to manage client integrations, track project status, and centralize documentation across the team.",
+      "Built the internal tool my team actually wanted — track client integrations, manage project status, and stop losing docs in Slack threads.",
     tech: ["React", "Node.js", "REST APIs", "Tailwind CSS"],
     accentGlow: "bg-teal-500/15",
     accentBorder: "hover:border-teal-400/40",
@@ -74,9 +74,9 @@ const projects = [
   },
   {
     title: "This Portfolio",
-    tagline: "The site you're looking at",
+    tagline: "The site you're looking at right now",
     description:
-      "A cinematic personal site built from scratch with React, Tailwind v4, and Motion. Scroll-driven animations, horizontal gallery, and custom interactions.",
+      "You're scrolling through it. Built from scratch — scroll-driven horizontal gallery, 3D card tilts, animated counters, and way too many hover states. Had fun with this one.",
     tech: ["React", "TypeScript", "Tailwind v4", "Motion"],
     accentGlow: "bg-amber-500/15",
     accentBorder: "hover:border-amber-400/40",
@@ -186,7 +186,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
           {project.tech.map((t) => (
             <span
               key={t}
-              className="text-xs font-medium text-neutral-500 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10"
+              className="text-xs font-mono font-medium text-neutral-500 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10"
             >
               {t}
             </span>
@@ -232,7 +232,7 @@ export function Portfolio() {
             Portfolio
           </h3>
           <p className="mt-4 text-neutral-500 font-light leading-relaxed max-w-xs">
-            A few things I've built, broken, and shipped.
+            Things I've built, broken, and shipped.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -261,7 +261,7 @@ export function Portfolio() {
                       <TextScramble text="Portfolio" />
                     </h3>
                     <p className="mt-2 text-neutral-500 font-light leading-relaxed max-w-xs text-sm">
-                      A few things I've built, broken, and shipped.
+                      Things I've built, broken, and shipped.
                     </p>
                   </div>
                   {/* Progress indicator */}
