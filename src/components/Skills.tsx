@@ -30,8 +30,8 @@ function MarqueeRow({ items, reverse = false, speed = 30 }: { items: string[]; r
 
 export function Skills() {
   return (
-    <section id="skills" className="py-24 md:py-32 border-t border-white/5">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+    <section id="skills" className="py-24 md:py-32">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
         <div className="md:col-span-4">
           <Parallax offset={-30}>
             <ScrollReveal>

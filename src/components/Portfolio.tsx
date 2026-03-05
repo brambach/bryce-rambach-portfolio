@@ -197,7 +197,7 @@ export function Portfolio() {
   // Fallback for reduced motion: normal vertical layout
   if (reducedMotion) {
     return (
-      <section id="portfolio" className="py-24 md:py-32 border-t border-white/5">
+      <section id="portfolio" className="py-24 md:py-32 max-w-6xl mx-auto px-6 md:px-12">
         <div className="mb-12">
           <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
             Portfolio
@@ -218,7 +218,7 @@ export function Portfolio() {
   }
 
   return (
-    <section id="portfolio" className="border-t border-white/5">
+    <section id="portfolio" className="px-6 md:px-12">
       {/* This tall container is what we scroll through — height drives horizontal movement */}
       <div ref={containerRef} style={{ height: `${projects.length * 60}vh` }} className="relative">
         <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden py-24">
