@@ -1,6 +1,6 @@
 import { FadeIn } from "./FadeIn";
 import { motion } from "motion/react";
-import { ExternalLink, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const projects = [
   {
@@ -72,11 +72,11 @@ const projects = [
 
 export function Portfolio() {
   return (
-    <section id="portfolio" className="py-24 md:py-32 border-t border-neutral-100">
+    <section id="portfolio" className="py-24 md:py-32 border-t border-white/5">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
         <div className="md:col-span-4">
           <FadeIn>
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-400">
+            <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
               Portfolio
             </h3>
             <p className="mt-4 text-neutral-500 font-light leading-relaxed max-w-xs">
@@ -95,15 +95,15 @@ export function Portfolio() {
                 >
                   {/* Accent gradient glow */}
                   <div
-                    className={`absolute -inset-px rounded-[2rem] bg-gradient-to-br ${project.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}
+                    className={`absolute -inset-px rounded-4xl bg-gradient-to-br ${project.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}
                   />
 
                   <div
-                    className={`relative h-full bg-white/25 bg-gradient-to-br from-white/40 to-white/5 backdrop-blur-3xl border border-white/80 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_8px_32px_rgba(0,0,0,0.04)] rounded-[2rem] p-8 transition-all duration-300 ${project.accentBorder} hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_16px_48px_rgba(0,0,0,0.08)]`}
+                    className={`relative h-full bg-white/3 backdrop-blur-xl border border-white/6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-8 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]`}
                   >
                     {/* Header */}
                     <div className="flex items-start justify-between mb-1">
-                      <h4 className="text-lg font-semibold text-neutral-900">
+                      <h4 className="text-lg font-semibold text-white">
                         {project.title}
                       </h4>
                       {project.url && project.url !== "#" && (
@@ -111,18 +111,18 @@ export function Portfolio() {
                           href={project.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-shrink-0 ml-3 p-1.5 rounded-xl bg-white/40 border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] text-neutral-400 hover:text-neutral-900 transition-colors"
+                          className="flex-shrink-0 ml-3 p-1.5 rounded-xl bg-white/5 border border-white/10 text-neutral-500 hover:text-white transition-colors"
                         >
                           <ArrowUpRight className="w-4 h-4" />
                         </a>
                       )}
                     </div>
-                    <p className="text-sm font-medium text-neutral-400 mb-4 tracking-wide">
+                    <p className="text-sm font-medium text-neutral-500 mb-4 tracking-wide">
                       {project.tagline}
                     </p>
 
                     {/* Description */}
-                    <p className="text-neutral-600 font-light leading-relaxed text-sm mb-6">
+                    <p className="text-neutral-400 font-light leading-relaxed text-sm mb-6">
                       {project.description}
                     </p>
 
@@ -131,7 +131,7 @@ export function Portfolio() {
                       {project.tech.map((t) => (
                         <span
                           key={t}
-                          className="text-xs font-medium text-neutral-500 bg-white/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/80 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]"
+                          className="text-xs font-medium text-neutral-500 bg-white/5 backdrop-blur-md px-3 py-1 rounded-full border border-white/10"
                         >
                           {t}
                         </span>
