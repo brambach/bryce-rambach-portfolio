@@ -3,40 +3,70 @@ import { motion, useReducedMotion } from "motion/react";
 const name = "Bryce Rambach";
 const taglineWords = ["Bridging", "APIs,", "data,", "and", "systems", "at", "scale."];
 
-function OrbitalSystem() {
+const nodes = [
+  { name: "HiBob", x: 50, y: 6, delay: 0 },
+  { name: "NetSuite", x: 90, y: 34, delay: 1.2 },
+  { name: "Workato", x: 78, y: 78, delay: 0.6 },
+  { name: "Deputy", x: 22, y: 78, delay: 1.8 },
+  { name: "React", x: 10, y: 34, delay: 2.4 },
+];
+
+function IntegrationNetwork() {
   return (
-    <div className="relative w-full aspect-square max-w-lg mx-auto">
-      {/* Outer ring */}
-      <div className="absolute inset-0 rounded-full border border-white/6" />
-      {/* Middle ring */}
-      <div className="absolute inset-[15%] rounded-full border border-white/8" />
-      {/* Inner ring */}
-      <div className="absolute inset-[35%] rounded-full border border-white/10" />
+    <div className="relative w-full aspect-square max-w-md mx-auto">
+      {/* Connection lines — animated dashes suggest data flow */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" fill="none">
+        {nodes.map((node, i) => (
+          <line
+            key={i}
+            x1="50"
+            y1="50"
+            x2={node.x}
+            y2={node.y}
+            stroke="rgba(255,255,255,0.1)"
+            strokeWidth="0.25"
+            strokeDasharray="1.5 2"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              values="0;-3.5"
+              dur={`${2.5 + i * 0.4}s`}
+              repeatCount="indefinite"
+            />
+          </line>
+        ))}
+        {/* Subtle orbital ring */}
+        <circle cx="50" cy="50" r="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.25" fill="none" />
+        <circle cx="50" cy="50" r="42" stroke="rgba(255,255,255,0.025)" strokeWidth="0.25" fill="none" strokeDasharray="2 3" />
+      </svg>
 
-      {/* Center glow dot */}
-      <div className="absolute inset-[46%] rounded-full bg-blue-500/60 blur-sm animate-float" />
-      <div className="absolute inset-[48%] rounded-full bg-white/80" />
-
-      {/* Orbiting dots — outer ring */}
-      <div className="absolute inset-0 animate-orbit">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-blue-400 shadow-[0_0_12px_rgba(96,165,250,0.6)]" />
-      </div>
-      <div className="absolute inset-0 animate-orbit" style={{ animationDelay: "-7s" }}>
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_10px_rgba(192,132,252,0.5)]" />
+      {/* Center hub */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="relative">
+          <div className="absolute -inset-4 bg-blue-500/15 blur-2xl rounded-full" />
+          <div className="relative w-14 h-14 rounded-2xl bg-white/[0.06] border border-white/[0.12] flex items-center justify-center backdrop-blur-sm">
+            <span className="text-base font-bold text-white/70 tracking-tight font-display">BR</span>
+          </div>
+        </div>
       </div>
 
-      {/* Orbiting dots — middle ring */}
-      <div className="absolute inset-[15%] animate-orbit-reverse">
-        <div className="absolute top-0 right-0 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
-      </div>
-      <div className="absolute inset-[15%] animate-orbit-reverse" style={{ animationDelay: "-12s" }}>
-        <div className="absolute bottom-0 left-0 translate-y-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.4)]" />
-      </div>
-
-      {/* Large glowing dot — inner ring */}
-      <div className="absolute inset-[35%] animate-orbit" style={{ animationDelay: "-5s", animationDuration: "15s" }}>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.7)]" />
-      </div>
+      {/* Platform nodes */}
+      {nodes.map((node) => (
+        <div
+          key={node.name}
+          className="absolute animate-float"
+          style={{
+            left: `${node.x}%`,
+            top: `${node.y}%`,
+            transform: "translate(-50%, -50%)",
+            animationDelay: `${node.delay}s`,
+          }}
+        >
+          <div className="px-4 py-2 bg-white/[0.05] border border-white/[0.12] rounded-full text-xs font-medium text-neutral-400 backdrop-blur-sm whitespace-nowrap hover:border-white/25 hover:text-neutral-200 transition-colors duration-300">
+            {node.name}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -49,11 +79,11 @@ export function Hero() {
       <section className="min-h-screen flex items-center px-6 md:px-12">
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="text-7xl md:text-9xl font-bold tracking-tighter text-gradient mb-6">
+            <h1 className="text-6xl md:text-8xl font-display tracking-tight text-white mb-6">
               {name}
             </h1>
             <h2 className="text-2xl md:text-4xl font-light text-neutral-400 tracking-tight max-w-3xl leading-tight mb-4">
-              Bridging APIs, data, and <span className="text-gradient-accent">systems</span> at scale.
+              Bridging APIs, data, and <span className="text-blue-400">systems</span> at scale.
             </h2>
             <p className="text-lg md:text-xl text-neutral-500 font-light tracking-tight mb-8">
               Integration Specialist @ Digital Directions
@@ -77,8 +107,8 @@ export function Hero() {
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left column — text */}
         <div>
-          {/* Letter-by-letter name with spring physics */}
-          <h1 className="text-7xl md:text-9xl font-bold tracking-tighter text-gradient mb-6 overflow-hidden">
+          {/* Name with serif display font */}
+          <h1 className="text-6xl md:text-8xl font-display tracking-tight text-white mb-6 overflow-hidden">
             {name.split("").map((char, i) => (
               <motion.span
                 key={i}
@@ -110,14 +140,14 @@ export function Hero() {
                   delay: 1.0 + i * 0.12,
                   ease: [0.21, 0.47, 0.32, 0.98],
                 }}
-                className={`inline-block mr-[0.3em] ${word === "systems" ? "text-gradient-accent" : ""}`}
+                className={`inline-block mr-[0.3em] ${word === "systems" ? "text-blue-400" : ""}`}
               >
                 {word}
               </motion.span>
             ))}
           </h2>
 
-          {/* Subtitle fades in */}
+          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -127,7 +157,7 @@ export function Hero() {
             Integration Specialist @ Digital Directions
           </motion.p>
 
-          {/* Status badge fades in last with scale */}
+          {/* Status badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -154,14 +184,14 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right column — orbital visual */}
+        {/* Right column — integration network */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
           className="hidden lg:flex items-center justify-center"
         >
-          <OrbitalSystem />
+          <IntegrationNetwork />
         </motion.div>
       </div>
     </section>

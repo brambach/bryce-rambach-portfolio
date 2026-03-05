@@ -11,9 +11,9 @@ const projects = [
     description:
       "Founded a freelance web studio building modern, high-performance sites for small businesses and creators. Full-stack development from design to deployment.",
     tech: ["React", "Next.js", "Tailwind CSS", "Vercel"],
-    accent: "from-blue-500/20 to-cyan-500/20",
-    accentBorder: "hover:border-blue-300/60",
-    accentLine: "from-blue-500 to-cyan-500",
+    accentGlow: "bg-blue-500/15",
+    accentBorder: "hover:border-blue-400/40",
+    accentLine: "bg-blue-500",
     dotColor: "bg-blue-400",
     url: "https://brycedigital.io",
   },
@@ -23,9 +23,9 @@ const projects = [
     description:
       "Built a bidirectional sync between HiBob and NetSuite, automating employee lifecycle events across HR and finance. Eliminated hours of manual data entry per week.",
     tech: ["Workato", "REST APIs", "HiBob", "NetSuite"],
-    accent: "from-emerald-500/20 to-teal-500/20",
-    accentBorder: "hover:border-emerald-300/60",
-    accentLine: "from-emerald-500 to-teal-500",
+    accentGlow: "bg-emerald-500/15",
+    accentBorder: "hover:border-emerald-400/40",
+    accentLine: "bg-emerald-500",
     dotColor: "bg-emerald-400",
   },
   {
@@ -34,9 +34,9 @@ const projects = [
     description:
       "Designed an integration pipeline connecting Deputy scheduling data with payroll and HRIS systems, reducing reconciliation errors and streamlining onboarding workflows.",
     tech: ["Workato", "Webhooks", "Deputy", "API Design"],
-    accent: "from-purple-500/20 to-violet-500/20",
-    accentBorder: "hover:border-purple-300/60",
-    accentLine: "from-purple-500 to-violet-500",
+    accentGlow: "bg-purple-500/15",
+    accentBorder: "hover:border-purple-400/40",
+    accentLine: "bg-purple-500",
     dotColor: "bg-purple-400",
   },
   {
@@ -45,9 +45,9 @@ const projects = [
     description:
       "Integrated HiBob with MYOB to automate the flow of employee data into accounting workflows, ensuring payroll and financial records stay in sync without manual intervention.",
     tech: ["Workato", "REST APIs", "HiBob", "MYOB"],
-    accent: "from-rose-500/20 to-pink-500/20",
-    accentBorder: "hover:border-rose-300/60",
-    accentLine: "from-rose-500 to-pink-500",
+    accentGlow: "bg-rose-500/15",
+    accentBorder: "hover:border-rose-400/40",
+    accentLine: "bg-rose-500",
     dotColor: "bg-rose-400",
   },
   {
@@ -56,9 +56,9 @@ const projects = [
     description:
       "Built an automated sync between HiBob and KeyPay, streamlining employee onboarding and payroll processing by eliminating duplicate data entry across systems.",
     tech: ["Workato", "REST APIs", "HiBob", "KeyPay"],
-    accent: "from-sky-500/20 to-indigo-500/20",
-    accentBorder: "hover:border-sky-300/60",
-    accentLine: "from-sky-500 to-indigo-500",
+    accentGlow: "bg-sky-500/15",
+    accentBorder: "hover:border-sky-400/40",
+    accentLine: "bg-sky-500",
     dotColor: "bg-sky-400",
   },
   {
@@ -67,9 +67,9 @@ const projects = [
     description:
       "Developed an internal portal for Digital Directions to manage client integrations, track project status, and centralize documentation across the team.",
     tech: ["React", "Node.js", "REST APIs", "Tailwind CSS"],
-    accent: "from-teal-500/20 to-cyan-500/20",
-    accentBorder: "hover:border-teal-300/60",
-    accentLine: "from-teal-500 to-cyan-500",
+    accentGlow: "bg-teal-500/15",
+    accentBorder: "hover:border-teal-400/40",
+    accentLine: "bg-teal-500",
     dotColor: "bg-teal-400",
   },
   {
@@ -78,9 +78,9 @@ const projects = [
     description:
       "A cinematic personal site built from scratch with React, Tailwind v4, and Motion. Scroll-driven animations, horizontal gallery, and custom interactions.",
     tech: ["React", "TypeScript", "Tailwind v4", "Motion"],
-    accent: "from-amber-500/20 to-orange-500/20",
-    accentBorder: "hover:border-amber-300/60",
-    accentLine: "from-amber-500 to-orange-500",
+    accentGlow: "bg-amber-500/15",
+    accentBorder: "hover:border-amber-400/40",
+    accentLine: "bg-amber-500",
     dotColor: "bg-amber-400",
     url: "#",
   },
@@ -130,19 +130,19 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
       style={{ perspective: 800, transformStyle: "preserve-3d" }}
       data-cursor="card"
     >
-      {/* Accent gradient glow */}
+      {/* Accent glow on hover */}
       <div
-        className={`absolute -inset-px rounded-4xl bg-gradient-to-br ${project.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}
+        className={`absolute -inset-px rounded-4xl ${project.accentGlow} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}
       />
 
       <div
         className={`relative h-full bg-white/3 backdrop-blur-xl border border-white/6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-4xl p-10 md:p-12 transition-all duration-300 ${project.accentBorder} hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] overflow-hidden`}
       >
-        {/* Colored accent line at top */}
-        <div className={`absolute top-0 left-8 right-8 h-0.5 bg-linear-to-r ${project.accentLine} opacity-40`} />
+        {/* Colored accent line at top — solid */}
+        <div className={`absolute top-0 left-0 right-0 h-[3px] ${project.accentLine} opacity-50 rounded-t-4xl`} />
 
-        {/* Ghost number */}
-        <span className="absolute top-6 right-8 text-7xl font-black text-white/3 select-none pointer-events-none leading-none">
+        {/* Ghost number — more visible */}
+        <span className="absolute top-6 right-8 text-8xl font-black text-white/[0.06] select-none pointer-events-none leading-none font-display">
           {String(index + 1).padStart(2, "0")}
         </span>
 

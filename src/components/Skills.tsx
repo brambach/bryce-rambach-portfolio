@@ -1,3 +1,5 @@
+import { useRef, useState, useEffect } from "react";
+import { useInView } from "motion/react";
 import { ScrollReveal } from "./ScrollReveal";
 import { TextScramble } from "./TextScramble";
 
@@ -6,10 +8,48 @@ const row2 = ["Node.js", "Tailwind CSS", "Next.js", "Systems Architecture", "Sol
 const row3 = ["Process Automation", "REST APIs", "GraphQL", "CI/CD", "Vercel", "PostgreSQL", "Git", "Agile"];
 
 const stats = [
-  { value: "15+", label: "Technologies" },
-  { value: "6", label: "Platforms" },
-  { value: "3+", label: "Years Building" },
+  { value: 15, suffix: "+", label: "Technologies" },
+  { value: 6, suffix: "", label: "Platforms" },
+  { value: 3, suffix: "+", label: "Years Building" },
 ];
+
+function AnimatedCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const duration = 1200;
+    const start = performance.now();
+
+    let frame: number;
+    const animate = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setCount(Math.floor(eased * value));
+      if (progress < 1) {
+        frame = requestAnimationFrame(animate);
+      } else {
+        setCount(value);
+      }
+    };
+
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [isInView, value]);
+
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-4xl md:text-5xl font-bold text-blue-400 tabular-nums">
+        {count}{suffix}
+      </div>
+      <div className="text-xs md:text-sm font-medium text-neutral-500 uppercase tracking-wider mt-2">
+        {label}
+      </div>
+    </div>
+  );
+}
 
 function MarqueeRow({ items, reverse = false, speed = 30 }: { items: string[]; reverse?: boolean; speed?: number }) {
   const doubled = [...items, ...items];
@@ -52,9 +92,9 @@ function CircuitLine() {
 
 export function Skills() {
   return (
-    <section id="skills" className="py-16 md:py-24">
+    <section id="skills" className="py-16 md:py-20">
       {/* Centered header */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 text-center mb-12">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 text-center mb-10">
         <ScrollReveal>
           <h3 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
             <TextScramble text="Skills & Tech Stack" />
@@ -62,18 +102,18 @@ export function Skills() {
         </ScrollReveal>
       </div>
 
-      {/* Stats row */}
+      {/* Stats row — animated counters */}
       <div className="max-w-3xl mx-auto px-6 md:px-12 mb-8">
-        <ScrollReveal>
-          <div className="flex justify-center gap-12 md:gap-20">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-gradient-accent">{stat.value}</div>
-                <div className="text-xs md:text-sm font-medium text-neutral-500 uppercase tracking-wider mt-2">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
+        <div className="flex justify-center gap-12 md:gap-20">
+          {stats.map((stat) => (
+            <AnimatedCounter
+              key={stat.label}
+              value={stat.value}
+              suffix={stat.suffix}
+              label={stat.label}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Circuit line */}
