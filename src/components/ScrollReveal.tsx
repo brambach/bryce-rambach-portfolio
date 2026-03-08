@@ -1,5 +1,40 @@
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
-import { useRef, type ReactNode } from "react";
+import { useRef, useState, useEffect, type ReactNode } from "react";
+
+/* ── Touch detection (shared, evaluated once) ─────────────────── */
+
+const isTouchDevice =
+  typeof window !== "undefined" &&
+  (window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0);
+
+/* ── Hook: one-shot IntersectionObserver reveal for mobile ────── */
+
+function useInViewOnce(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect(); // one-shot — stop observing after reveal
+        }
+      },
+      { threshold },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, visible };
+}
+
+/* ── ScrollReveal ─────────────────────────────────────────────── */
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -15,8 +50,61 @@ export function ScrollReveal({
   slideFrom = 0,
   delay = 0,
 }: ScrollRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
+
+  if (reducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
+  // Mobile: IntersectionObserver → one-shot triggered animation
+  if (isTouchDevice) {
+    return (
+      <MobileReveal className={className} slideFrom={slideFrom} delay={delay}>
+        {children}
+      </MobileReveal>
+    );
+  }
+
+  // Desktop: continuous scroll-linked animation
+  return (
+    <DesktopReveal className={className} slideFrom={slideFrom} delay={delay}>
+      {children}
+    </DesktopReveal>
+  );
+}
+
+function MobileReveal({
+  children,
+  className,
+  slideFrom,
+  delay,
+}: ScrollRevealProps) {
+  const { ref, visible } = useInViewOnce(0.1);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40, x: (slideFrom ?? 0) * 50 }}
+      animate={visible ? { opacity: 1, y: 0, x: 0 } : undefined}
+      transition={{
+        duration: 0.5,
+        delay: delay ?? 0,
+        ease: [0.21, 0.47, 0.32, 0.98],
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function DesktopReveal({
+  children,
+  className,
+  slideFrom,
+  delay,
+}: ScrollRevealProps) {
+  const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -25,11 +113,7 @@ export function ScrollReveal({
 
   const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
   const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
-  const x = useTransform(scrollYProgress, [0, 1], [slideFrom * 80, 0]);
-
-  if (reducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
+  const x = useTransform(scrollYProgress, [0, 1], [(slideFrom ?? 0) * 80, 0]);
 
   return (
     <motion.div
@@ -42,6 +126,8 @@ export function ScrollReveal({
     </motion.div>
   );
 }
+
+/* ── Parallax ─────────────────────────────────────────────────── */
 
 interface ParallaxProps {
   children: ReactNode;
@@ -61,7 +147,8 @@ export function Parallax({ children, className = "", offset = -40 }: ParallaxPro
 
   const y = useTransform(scrollYProgress, [0, 1], [0, offset]);
 
-  if (reducedMotion) {
+  // On mobile or reduced motion, skip parallax entirely
+  if (reducedMotion || isTouchDevice) {
     return <div className={className}>{children}</div>;
   }
 

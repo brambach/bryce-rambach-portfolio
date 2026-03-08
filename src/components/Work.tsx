@@ -30,6 +30,10 @@ const experiences = [
   },
 ];
 
+const isTouchDevice =
+  typeof window !== "undefined" &&
+  (window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0);
+
 export function Work() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
@@ -40,6 +44,7 @@ export function Work() {
   });
 
   // Timeline line draws from 0 to full height as section scrolls in
+  // On mobile, just show the line at full height (skip scroll tracking)
   const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
@@ -60,7 +65,7 @@ export function Work() {
           <div className="absolute left-[3px] top-0 bottom-0 w-px bg-white/[0.06]" />
           <motion.div
             className="absolute left-[3px] top-0 bottom-0 w-px bg-white/[0.15] origin-top"
-            style={{ scaleY: reducedMotion ? 1 : lineScaleY }}
+            style={{ scaleY: reducedMotion || isTouchDevice ? 1 : lineScaleY }}
           />
 
           {/* Entries */}
