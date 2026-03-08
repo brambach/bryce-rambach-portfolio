@@ -9,6 +9,7 @@ import { Portfolio } from "./components/Portfolio";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { StarField } from "./components/StarField";
+import { ScrollBeam } from "./components/ScrollBeam";
 
 function SectionDivider() {
   return (
@@ -80,6 +81,7 @@ export default function App() {
       />
 
       <StarField />
+      <ScrollBeam />
 
       <Navbar />
       <main className="pt-24">
