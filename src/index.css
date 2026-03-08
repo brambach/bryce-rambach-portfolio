@@ -9,7 +9,7 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    overscroll-behavior: none;
   }
 
   body {
@@ -76,10 +76,6 @@
 
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
   .animate-blob,
   .animate-marquee,
   .animate-marquee-reverse {
