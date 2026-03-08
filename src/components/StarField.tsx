@@ -173,15 +173,15 @@ export function StarField() {
     (ctx: CanvasRenderingContext2D, w: number, h: number, t: number) => {
       ctx.clearRect(0, 0, w, h);
 
-      const sY = scrollY.current;
-      const sV = Math.abs(scrollVel.current);
+      const isTouch = isTouchDevice.current;
+      // On mobile, skip scroll-driven effects (canvas can't sync with compositor scroll)
+      const sY = isTouch ? 0 : scrollY.current;
+      const sV = isTouch ? 0 : Math.abs(scrollVel.current);
       const totalH = h * FIELD_H;
       const mX = mouseX.current;
       const mY = mouseY.current;
-      const isTouch = isTouchDevice.current;
 
-      // Warp intensity — subtle streak boost only on genuinely fast scrolling
-      // Disabled on touch devices (flick-scroll generates huge velocity spikes)
+      // Warp intensity — subtle streak boost only on genuinely fast scrolling (desktop only)
       const warpIntensity = isTouch ? 0 : sV > 25 ? Math.min((sV - 25) / 35, 1) : 0;
 
       /* ── Nebulae (drawn first, behind everything) ─────────── */
