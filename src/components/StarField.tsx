@@ -120,7 +120,7 @@ export function StarField() {
       for (let i = 0; i < n; i++) {
         stars.push({
           x: Math.random() * (w + 40) - 20,
-          y: Math.random() * h * FIELD_H,
+          y: Math.random() * (mobile ? h : h * FIELD_H),
           size: rand(L.sizeMin, L.sizeMax),
           baseOpacity: rand(L.opMin, L.opMax),
           layer: li,
@@ -341,15 +341,18 @@ export function StarField() {
       const t = ts * 0.001;
 
       // Idle detection — after 2s of no input, drop to ~4fps for twinkle only
-      if (!isIdle.current) {
-        idleTimer.current += Math.min(dt, 100);
-        if (idleTimer.current > 2000 && Math.abs(scrollVel.current) < 0.5) {
-          isIdle.current = true;
+      // Skip on touch devices (no mouse to wake, so twinkling would freeze)
+      if (!isTouchDevice.current) {
+        if (!isIdle.current) {
+          idleTimer.current += Math.min(dt, 100);
+          if (idleTimer.current > 2000 && Math.abs(scrollVel.current) < 0.5) {
+            isIdle.current = true;
+          }
         }
-      }
-      if (isIdle.current && dt < 250) {
-        rafId.current = requestAnimationFrame(loop);
-        return; // skip this frame, draw ~4fps
+        if (isIdle.current && dt < 250) {
+          rafId.current = requestAnimationFrame(loop);
+          return; // skip this frame, draw ~4fps
+        }
       }
 
       last = ts;
