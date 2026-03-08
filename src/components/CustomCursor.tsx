@@ -49,10 +49,10 @@ export function CustomCursor() {
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
-    document.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseover", handleMouseOver, { passive: true });
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
@@ -87,7 +87,7 @@ export function CustomCursor() {
 
       {/* Dot */}
       <motion.div
-        className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
+        className="fixed top-0 left-0 z-[9999] pointer-events-none"
         style={{
           x: dotX,
           y: dotY,

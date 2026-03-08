@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { About } from "./components/About";
@@ -8,27 +8,7 @@ import { Work } from "./components/Work";
 import { Portfolio } from "./components/Portfolio";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
-
-function DotGrid() {
-  const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 600], [0.4, 0]);
-
-  return (
-    <motion.div
-      style={{ opacity }}
-      className="fixed inset-0 z-[-1] pointer-events-none"
-    >
-      <svg width="100%" height="100%">
-        <defs>
-          <pattern id="dotgrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.15)" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#dotgrid)" />
-      </svg>
-    </motion.div>
-  );
-}
+import { StarField } from "./components/StarField";
 
 function SectionDivider() {
   return (
@@ -83,24 +63,23 @@ export default function App() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="min-h-screen text-neutral-300 font-sans selection:bg-white/10 selection:text-white relative z-0"
     >
-      {/* Ambient background depth — neutral tones */}
-      <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none will-change-transform">
-        <div className="absolute top-[-20%] left-[-15%] w-[60%] h-[60%] rounded-full bg-white/[0.02] blur-[150px] animate-blob" />
-        <div className="absolute bottom-[-20%] right-[-15%] w-[55%] h-[55%] rounded-full bg-white/[0.015] blur-[150px] animate-blob animation-delay-2000" />
-        <div className="absolute top-[30%] left-[50%] w-[40%] h-[40%] rounded-full bg-white/[0.012] blur-[130px] animate-blob animation-delay-4000" />
+      {/* Ambient background depth — neutral tones (reduced blur for GPU perf) */}
+      <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div className="absolute top-[-20%] left-[-15%] w-[60%] h-[60%] rounded-full bg-white/[0.02] blur-[80px] animate-blob" />
+        <div className="absolute bottom-[-20%] right-[-15%] w-[55%] h-[55%] rounded-full bg-white/[0.015] blur-[80px] animate-blob animation-delay-2000" />
+        <div className="absolute top-[30%] left-[50%] w-[40%] h-[40%] rounded-full bg-white/[0.012] blur-[70px] animate-blob animation-delay-4000" />
       </div>
 
-      {/* Noise/Grain Texture Overlay */}
-      <div className="fixed inset-0 z-[-1] pointer-events-none opacity-[0.03]">
-        <svg width="100%" height="100%">
-          <filter id="noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#noise)" />
-        </svg>
-      </div>
+      {/* Noise/Grain Texture Overlay — static image, no per-frame rasterization */}
+      <div
+        className="fixed inset-0 z-[-1] pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+        }}
+      />
 
-      <DotGrid />
+      <StarField />
 
       <Navbar />
       <main className="pt-24">

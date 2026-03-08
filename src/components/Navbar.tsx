@@ -1,14 +1,20 @@
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const scrolledRef = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const isScrolled = window.scrollY > 50;
+      // Only trigger re-render when the state actually changes
+      if (isScrolled !== scrolledRef.current) {
+        scrolledRef.current = isScrolled;
+        setScrolled(isScrolled);
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -18,7 +24,7 @@ export function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-[#0A0A0B]/80 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_24px_rgba(0,0,0,0.3)] py-4" : "bg-transparent py-6"
+        scrolled ? "bg-[#0A0A0B]/90 backdrop-blur-md border-b border-white/5 shadow-[0_4px_24px_rgba(0,0,0,0.3)] py-4" : "bg-transparent py-6"
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 flex items-center justify-between">

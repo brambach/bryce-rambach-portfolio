@@ -63,8 +63,8 @@ export function Hero() {
           {taglineWords.map((word, i) => (
             <motion.span
               key={i}
-              initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.4,
                 delay: 0.9 + i * 0.1,
