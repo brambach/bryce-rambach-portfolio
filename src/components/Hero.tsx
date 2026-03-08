@@ -8,7 +8,7 @@ export function Hero() {
 
   if (reducedMotion) {
     return (
-      <section className="min-h-screen flex items-center px-6 md:px-12">
+      <section className="min-h-dvh flex items-center px-6 md:px-12">
         <div className="max-w-5xl mx-auto w-full">
           <h1 className="text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] font-display tracking-tight text-white leading-[0.9] mb-6">
             {name}
@@ -36,7 +36,7 @@ export function Hero() {
   }
 
   return (
-    <section className="min-h-screen flex items-center px-6 md:px-12">
+    <section className="min-h-dvh flex items-center px-6 md:px-12">
       <div className="max-w-5xl mx-auto w-full">
         {/* Name — massive serif */}
         <h1 className="text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] font-display tracking-tight text-white leading-[0.9] pb-5 mb-6 overflow-hidden">

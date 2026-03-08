@@ -342,7 +342,7 @@ export function StarField() {
 
       // Idle detection — after 2s of no input, drop to ~4fps for twinkle only
       if (!isIdle.current) {
-        idleTimer.current += dt;
+        idleTimer.current += Math.min(dt, 100);
         if (idleTimer.current > 2000 && Math.abs(scrollVel.current) < 0.5) {
           isIdle.current = true;
         }
@@ -354,8 +354,11 @@ export function StarField() {
 
       last = ts;
 
+      // Cap dt so animations don't "catch up" after tab throttle / AFK
+      const cdt = Math.min(dt, 100);
+
       // Smooth mouse interpolation (lerp toward target)
-      const lerpFactor = 1 - Math.pow(0.05, dt / 1000);
+      const lerpFactor = 1 - Math.pow(0.05, cdt / 1000);
       mouseX.current += (targetMouseX.current - mouseX.current) * lerpFactor;
       mouseY.current += (targetMouseY.current - mouseY.current) * lerpFactor;
 
@@ -365,7 +368,7 @@ export function StarField() {
       // Advance shooting stars
       for (const sh of shootersRef.current) {
         if (!sh.active) {
-          sh.cooldown -= dt;
+          sh.cooldown -= cdt;
           if (sh.cooldown <= 0) {
             sh.active = true;
             sh.progress = 0;
@@ -377,8 +380,8 @@ export function StarField() {
             sh.speed = rand(0.004, 0.009);
           }
         } else {
-          sh.progress += sh.speed * (dt / 16);
-          if (sh.progress > 0.4) sh.opacity = Math.max(0, sh.opacity - 0.025 * (dt / 16));
+          sh.progress += sh.speed * (cdt / 16);
+          if (sh.progress > 0.4) sh.opacity = Math.max(0, sh.opacity - 0.025 * (cdt / 16));
           if (sh.opacity <= 0) {
             sh.active = false;
             sh.cooldown = rand(6000, 18000);
