@@ -181,8 +181,8 @@ export function StarField() {
       const isTouch = isTouchDevice.current;
 
       // Warp intensity — subtle streak boost only on genuinely fast scrolling
-      // Threshold at 25px/frame, max out at 60. Very gentle multiplier.
-      const warpIntensity = sV > 25 ? Math.min((sV - 25) / 35, 1) : 0;
+      // Disabled on touch devices (flick-scroll generates huge velocity spikes)
+      const warpIntensity = isTouch ? 0 : sV > 25 ? Math.min((sV - 25) / 35, 1) : 0;
 
       /* ── Nebulae (drawn first, behind everything) ─────────── */
       for (const neb of nebulaeRef.current) {
@@ -270,8 +270,8 @@ export function StarField() {
         ctx.stroke();
       }
 
-      /* ── Warp flash — brief brightness spike on fast scroll ─ */
-      if (warpIntensity > 0.3) {
+      /* ── Warp flash — brief brightness spike on fast scroll (desktop only) ─ */
+      if (!isTouch && warpIntensity > 0.3) {
         const flashOp = (warpIntensity - 0.3) * 0.04; // very subtle
         ctx.fillStyle = `rgba(200,220,255,${flashOp})`;
         ctx.fillRect(0, 0, w, h);
@@ -317,8 +317,13 @@ export function StarField() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Detect touch device — disable mouse parallax on touch
-    isTouchDevice.current = window.matchMedia("(pointer: coarse)").matches;
+    // Detect touch device — disable mouse parallax on touch.
+    // Check media query AND listen for first touch event (covers synthetic mousemove).
+    isTouchDevice.current = window.matchMedia("(pointer: coarse)").matches
+      || navigator.maxTouchPoints > 0;
+
+    const onTouchStart = () => { isTouchDevice.current = true; };
+    window.addEventListener("touchstart", onTouchStart, { passive: true, once: true });
 
     // Mouse tracking — normalize to -1..1 from viewport center
     const onMouse = (e: MouseEvent) => {
@@ -392,6 +397,7 @@ export function StarField() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("mousemove", onMouse);
+      window.removeEventListener("touchstart", onTouchStart);
     };
   }, [reducedMotion, seed, paint]);
 
