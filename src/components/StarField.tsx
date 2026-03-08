@@ -407,7 +407,11 @@ export function StarField() {
     };
   }, [reducedMotion, seed, paint]);
 
-  if (reducedMotion) return null;
+  // Skip entirely on touch devices — canvas rAF can't coexist with mobile scroll compositor
+  const isTouch = typeof window !== "undefined" &&
+    (window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0);
+
+  if (reducedMotion || isTouch) return null;
 
   return (
     <canvas
