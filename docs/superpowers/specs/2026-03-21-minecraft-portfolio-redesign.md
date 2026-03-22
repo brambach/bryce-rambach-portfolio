@@ -61,7 +61,7 @@ Two-tier system following "professional core, themed wrapper":
 - Achievement titles: 16px
 - Tooltip headers: 16px
 - Button text: 16px
-- Inventory slot labels: 8px (small, below icon)
+- Inventory slot labels: 16px (below icon, same baseline as other UI text)
 - Loading screen text: 24px
 - Splash text: 24px
 - XP bar levels: 16px
@@ -96,9 +96,10 @@ The landing page mimics Minecraft's main menu:
 - Center: player name "BRYCE RAMBACH" in Minecraft logo style (large, blocky, 3D text shadow)
 - Below name: yellow splash text "I make systems talk to each other!" with the classic bounce/pulse animation, rotated ~15 degrees
 - Menu buttons (MC beveled style):
-  - "Singleplayer" → scrolls to portfolio content
-  - "Multiplayer" → scrolls to contact section
-  - Optional: "Options" (greyed out or links to resume/LinkedIn)
+  - "Singleplayer" → scrolls to portfolio content (subtext: "Explore Portfolio")
+  - "Multiplayer" → scrolls to contact section (subtext: "Get In Touch")
+  - Optional: "Options" (links to resume/LinkedIn)
+- Subtext ensures non-Minecraft-players understand the navigation
 - Bottom: "Minecraft 1.21.5" style version text, could say "Portfolio v2.0" or similar
 
 ### 2. Loading Screen
@@ -228,9 +229,9 @@ Fixed to bottom of viewport (appears after spawn animation):
 - **Leaf fall**: small green squares drifting down in the forest biome.
 
 ### Easter Eggs
-- **Creeper explosion**: hidden creeper face somewhere on the site. Hovering triggers a "ssssss..." and a playful screen shake + block explosion particle burst. Doesn't break anything.
+- **Creeper explosion**: hidden creeper face somewhere on the site. Hovering triggers a visual "ssssss..." text effect and a playful screen shake + block explosion particle burst. No audio (out of scope). Doesn't break anything.
 - **Damage numbers**: if you click non-interactive whitespace, small red damage numbers float up ("Miss!" or "-0 HP"). Throttled to max once every 3 seconds to avoid annoyance. Desktop only.
-- **Hotbar number keys**: pressing 1-6 navigates to sections (matching Minecraft's hotbar shortcuts).
+- **Hotbar number keys**: pressing 1-7 navigates to sections (matching Minecraft's hotbar shortcuts).
 - **Konami code**: already exists in current site — preserve or adapt with an MC twist.
 
 ## Accessibility
@@ -261,7 +262,7 @@ All text content from the current site is preserved exactly. No copy changes. Th
 
 - Particle systems use requestAnimationFrame on a single shared `<canvas>` per biome (not individual DOM elements)
 - Particle budget: Desktop max 30 particles/biome, Mobile max 10. Target 60fps on M1 MacBook, 30fps acceptable on 2-year-old Android.
-- Intersection Observer for scroll-triggered animations (only animate what's in view). Off-screen biome canvases pause their animation loops.
+- Intersection Observer for scroll-triggered animations (only animate what's in view). Off-screen biome canvases pause their animation loops. Canvases more than 2 viewports away are destroyed and lazily recreated on approach to reclaim memory.
 - Minimal image assets — visuals are CSS, inline SVG, and canvas. Only custom assets are ~20 small SVG pixel icons for inventory slots.
 - Lazy-load below-fold biome backgrounds
 - Target: Lighthouse performance score 90+
