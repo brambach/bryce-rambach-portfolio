@@ -136,13 +136,43 @@ export const AI_STACK = [
 ];
 
 export const GREETING = {
-  line: 'Hi, I\u2019m <em>Bryce</em>.',
+  lineText: "Hi, I\u2019m Bryce.",
+  accentWord: 'Bryce',
   subtitleLines: [
     'Full-stack engineer.',
     'Ships production solo.',
     'Uses Claude Code daily.',
   ],
   chips: ['Tell me about your work', 'Show me your projects', 'How do you use AI?'],
+};
+
+/** Follow-up chip suggestions shown after a scripted topic answer completes. */
+export const FOLLOW_UPS: Record<ArtifactKind, string[]> = {
+  role: [
+    'Show me your projects',
+    'How do you use AI?',
+    'How can I reach you?',
+  ],
+  projects: [
+    'Tell me more about the DD Client Portal',
+    'How do you use AI and tools?',
+    'How can I reach you?',
+  ],
+  stack: [
+    'Show me your projects',
+    'Tell me about your work',
+    'How can I reach you?',
+  ],
+  resume: [
+    'Show me your projects',
+    'Tell me about your work',
+    'How can I reach you?',
+  ],
+  contact: [
+    'What are you looking for?',
+    'Show me your projects',
+    'Tell me about your work',
+  ],
 };
 
 export const KEYWORDS_TO_HIGHLIGHT = [
