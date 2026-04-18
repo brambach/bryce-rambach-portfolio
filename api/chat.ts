@@ -52,26 +52,6 @@ const ratelimit = new Ratelimit({
   prefix: 'ratelimit:chat',
 });
 
-async function verifyTurnstile(
-  token: string | null,
-  ip: string
-): Promise<boolean> {
-  if (!token) return false;
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return true; // dev: Turnstile disabled
-  const body = new URLSearchParams({
-    secret,
-    response: token,
-    remoteip: ip,
-  });
-  const res = await fetch(
-    'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-    { method: 'POST', body }
-  );
-  const data = (await res.json()) as { success: boolean };
-  return !!data.success;
-}
-
 type ChatRequest = {
   message: string;
   history?: Array<{ role: 'user' | 'assistant'; content: string }>;
@@ -84,12 +64,6 @@ export default async function handler(req: Request): Promise<Response> {
 
   const ip =
     req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown';
-  const turnstileToken = req.headers.get('x-turnstile-token');
-
-  const verified = await verifyTurnstile(turnstileToken, ip);
-  if (!verified) {
-    return json({ error: 'turnstile_failed' }, 403);
-  }
 
   const { success } = await ratelimit.limit(ip);
   if (!success) {
