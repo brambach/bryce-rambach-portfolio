@@ -45,7 +45,15 @@ Platforms — NetSuite, HiBob, MYOB, KeyPay, Deputy, Freshdesk, Slack, Resend, V
 LOOKING FOR:
 Solutions Engineer or Full-Stack roles at early-stage startups where the work has maximum impact. Relocating to SF or NYC summer 2026.`;
 
-const redis = Redis.fromEnv();
+// Vercel's Upstash integration prefixes its env vars with the custom
+// prefix set at install time, then stacks its own KV_REST_API_* suffixes
+// on top — so the names land as UPSTASH_REDIS_REST_KV_REST_API_URL /
+// UPSTASH_REDIS_REST_KV_REST_API_TOKEN. Read them explicitly rather than
+// using Redis.fromEnv() which looks for UPSTASH_REDIS_REST_URL/TOKEN.
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_KV_REST_API_URL!,
+  token: process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN!,
+});
 const ratelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.fixedWindow(10, '1 d'),
