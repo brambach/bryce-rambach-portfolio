@@ -178,7 +178,7 @@ No changes to `chat.ts` store shape. The `heat` value drives the heat-bleed laye
 - Should the `Constellation` message-history sidebar be renamed (since "constellation" now means the backdrop monogram)? Probably rename to `MessageTrail` or similar internally.
 - Mobile: the orb column becomes a horizontal sticky band on small screens. Pulsar beams will look different — may need to reduce beam length on mobile to avoid overflow.
 
-## Open questions for user before implementation
+## Decisions finalized
 
-- Is the color of user message bubbles okay as cool (`rgba(107, 160, 216, 0.18)`)? Alternative: warm tint, to match the cursor halo "you are warm" metaphor.
-- Should the first-visit ignition only play once per *session* (current) or once per *visit ever* (localStorage)? Current behavior is per-session; per-visit-ever means returning users never see it again, which might be better.
+- **User message bubbles use a warm terracotta tint** — `rgba(200, 112, 74, 0.15)` background, `rgba(200, 112, 74, 0.3)` border, cream text. This preserves the "you are warm, the pulsar is cool signal" metaphor established by the warm cursor halo. Assistant messages remain cool glass.
+- **Ignition replays per session, not per visit-ever** — keep current `sessionStorage` behavior. Ignition is the signature moment; a returning visitor in a new session should get to see it again. Only suppressed for page refreshes within a session.
