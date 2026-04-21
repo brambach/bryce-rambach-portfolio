@@ -7,7 +7,7 @@
     var(--color-paper) 60%,
     rgba(250, 247, 242, 0) 100%
   );
-  padding: 24px 0 32px;
+  padding: 24px 0 calc(32px + env(safe-area-inset-bottom));
   z-index: 20;
 }
 
@@ -34,7 +34,8 @@
   outline: none;
   background: transparent;
   font-family: var(--font-sans);
-  font-size: 15px;
+  /* 16px prevents iOS Safari from auto-zooming the viewport on focus. */
+  font-size: 16px;
   color: var(--color-ink);
   padding: 8px 0;
 }
@@ -43,8 +44,8 @@
 }
 
 .chat-input button {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: none;
   background: var(--color-accent);
@@ -55,10 +56,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
+  flex-shrink: 0;
 }
 .chat-input button:hover:not(:disabled) {
   transform: scale(1.08);
   background: var(--color-accent-deep);
+}
+.chat-input button:active:not(:disabled) {
+  transform: scale(0.94);
+  transition-duration: 0.08s;
 }
 .chat-input button:disabled {
   background: var(--color-muted);

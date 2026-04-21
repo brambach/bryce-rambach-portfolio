@@ -11,26 +11,42 @@
 .chip {
   font-family: var(--font-sans);
   font-size: 13px;
-  padding: 7px 14px;
+  padding: 10px 18px;
+  min-height: 44px;
   border: 1px solid var(--color-line);
   border-radius: 999px;
   color: var(--color-ink-soft);
   background: #fff;
   cursor: pointer;
   transition: all 0.18s ease;
+  touch-action: manipulation;
 }
 .chip:hover {
   border-color: var(--color-accent);
   color: var(--color-ink);
   background: #fffaf4;
 }
+.chip:active {
+  transform: scale(0.97);
+  background: #faf4ec;
+  transition-duration: 0.08s;
+}
 
 .message-stack {
   padding-top: 48px;
-  /* Enough bottom clearance so the newest text never hides behind the
-     sticky chat-input-bar when auto-scrolled. */
-  padding-bottom: 140px;
-  min-height: calc(100vh - 180px);
+  /* Bottom clearance so the newest text never hides behind the sticky
+     chat-input-bar when auto-scrolled. env() adds the iOS home-indicator
+     gap so the last line isn't clipped on phones. */
+  padding-bottom: calc(140px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 1024px) {
+  /* On desktop the orb is in a sticky column beside the stack. Give the
+     stack enough height so the scrollbar/overflow doesn't jitter when
+     content is short — the orb column is ~100vh, so match that region. */
+  .message-stack {
+    min-height: calc(100vh - 180px);
+  }
 }
 
 .greeting {
@@ -84,6 +100,14 @@
     text-align: center;
   }
 }
+@media (max-width: 1023px) {
+  /* Orb column already sits above the stack on mobile, so don't
+     double up the top breathing room. */
+  .message-stack {
+    padding-top: 16px;
+  }
+}
+
 @media (max-width: 639px) {
   .greeting {
     padding-top: 20px;
