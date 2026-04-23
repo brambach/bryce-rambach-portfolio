@@ -37,14 +37,16 @@ src/
 ├── main.tsx               # unchanged
 ├── index.css              # Tailwind entry + Apple design tokens (CSS custom properties)
 ├── components/
-│   ├── Nav.tsx            # Sticky translucent-glass nav
+│   ├── Nav.tsx            # Sticky translucent-glass nav (desktop + mobile Sheet trigger)
+│   ├── MobileMenu.tsx     # shadcn Sheet wrapper with Apple-styled overlay content
+│   ├── AppleButton.tsx    # Hand-coded pill CTA (button / anchor polymorphic)
 │   ├── Hero.tsx           # Black section, eyebrow + name + subtitle + CTAs
 │   ├── Work.tsx           # Light section, "6+" stat-forward
 │   ├── Projects.tsx       # Black section, pinned-scroll choreography
 │   ├── Stack.tsx          # Light section, 3 stacked rows
 │   ├── Contact.tsx        # Black section, split pitch + spec table
 │   ├── Footer.tsx         # Light gray, copyright + colophon
-│   └── ui/                # shadcn primitives (only Button; see §4)
+│   └── ui/                # shadcn primitives (only Sheet; see §4)
 └── lib/
     └── content.ts         # Trimmed to BIO, PROJECTS, AI_STACK
 ```
@@ -103,11 +105,13 @@ Per DESIGN.md §3 type hierarchy — no overrides. SF Pro Display at `≥20px`, 
 
 ## 4. shadcn usage
 
-Minimal. The Apple system is opinionated enough that most "primitives" (nav, cards, spec tables) are hand-coded with Tailwind. Only use shadcn for:
+Minimal. The Apple system is opinionated enough that most "primitives" (nav, cards, spec tables, CTAs) are hand-coded with Tailwind. Only use shadcn for:
 
-- **Button** — as the base for the two CTA variants (`primary` filled blue, `ghost` outlined). Wrapped in a tiny `AppleButton` component that restyles to the DESIGN.md spec rather than shadcn's defaults.
+- **Sheet** — the mobile nav overlay (hamburger → slide-in menu). Built on Radix UI's Dialog primitive, it ships focus trap, `aria-modal`, Escape-to-close, click-outside-to-close, and body-scroll-lock — all of which the spec requires and which are tedious to hand-roll correctly. Wrap in a small `MobileMenu` component that supplies the Apple-styled content (dark bg, large link list, Résumé block CTA).
 
-Do not install `NavigationMenu`, `Sheet`, `Card`, etc. — they add complexity beyond what's needed.
+CTAs (`View projects`, `Résumé`, `Email me`) are hand-coded as a small `AppleButton` component (`<button>` / `<a>` polymorphic, ~15 lines) rather than wrapping shadcn's `Button` — the Apple pill style overrides nearly every default, so the Radix Slot machinery doesn't earn its pixels.
+
+Do not install `NavigationMenu`, `Card`, `Button`, etc. — they add complexity beyond what's needed.
 
 ## 5. Components
 
@@ -119,7 +123,7 @@ Do not install `NavigationMenu`, `Sheet`, `Card`, etc. — they add complexity b
 - Logo: text "Bryce Rambach" in SF Pro Text 14px weight 600, white, `letter-spacing: -0.22px`. Clickable, scrolls to `#hero`.
 - Links: 4 anchors — Work, Projects, AI & Tools, Contact. SF Pro Text 12px weight 400, white at 80%, white at 100% on hover and when the active section is in view. Scroll-spy via `IntersectionObserver` on section roots.
 - Résumé pill: SF Pro Text 12px, white text, white/20% border, 980px radius, 8px 14px padding. Opens `/Bryce_Rambach_Resume.pdf` in a new tab.
-- Mobile: hamburger icon right, full-screen overlay menu. Overlay has the same nav links stacked at 20px SF Pro Display 400, plus Résumé as a block-level pill.
+- Mobile: hamburger icon right (from `lucide-react`), opens a shadcn `Sheet` that slides in from the right covering the full viewport. Sheet content: the 4 nav links stacked at 20px SF Pro Display 400, plus Résumé as a block-level pill CTA at the bottom. Sheet background: `#000000` (matches nav glass when fully opaque); text white. Closing the sheet on link click is handled manually (each link calls the sheet's `onOpenChange(false)` before navigating).
 
 ### 5.2 `Hero.tsx`
 
@@ -305,8 +309,11 @@ Keep the other three `PROJECTS` bodies unchanged.
 - `lucide-react` (nav hamburger icon only)
 - `shadcn` (devDep), `typescript`, `vitest`, `tsx`
 
-**Add**:
-- Nothing new. All effects achievable with `motion` + Tailwind + CSS custom properties.
+**Add** (via `npx shadcn add sheet`):
+- `@radix-ui/react-dialog` (transitive, powers shadcn Sheet)
+- `class-variance-authority`, `clsx`, `tailwind-merge` (transitive, standard shadcn utilities)
+
+No other runtime deps needed. All other effects are achievable with `motion` + Tailwind + CSS custom properties.
 
 ## 11. Out of scope / explicit non-goals
 
