@@ -1,11 +1,14 @@
 import { lazy, Suspense } from 'react';
 import { Reveal } from './Reveal';
+import { HeroFlowField } from './HeroFlowField';
 
 const HeroIcosahedron = lazy(() => import('./HeroIcosahedron'));
 
 export function Hero() {
   return (
-    <section
+    <>
+      <HeroFlowField />
+      <section
       id="top"
       aria-labelledby="hero-h"
       className="hero relative max-w-[1280px] mx-auto px-6 pt-[120px] pb-16 min-h-screen"
@@ -107,5 +110,6 @@ export function Hero() {
         </div>
       </Reveal>
     </section>
+    </>
   );
 }
