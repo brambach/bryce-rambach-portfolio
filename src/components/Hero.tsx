@@ -1,4 +1,7 @@
+import { lazy, Suspense } from 'react';
 import { Reveal } from './Reveal';
+
+const HeroIcosahedron = lazy(() => import('./HeroIcosahedron'));
 
 export function Hero() {
   return (
@@ -88,7 +91,9 @@ export function Hero() {
         </div>
 
         <div className="hero-figure-slot relative h-[280px] md:h-[420px]" aria-hidden="true">
-          {/* HeroIcosahedron mounts here in Task 16 */}
+          <Suspense fallback={null}>
+            <HeroIcosahedron />
+          </Suspense>
         </div>
       </div>
 
