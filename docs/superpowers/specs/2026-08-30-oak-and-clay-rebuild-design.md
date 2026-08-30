@@ -180,11 +180,25 @@ No résumé link (the PDF stays in `public/` for direct URLs, nothing points at
 it). No availability lines, no scorecards, no self-narrating design copy, no
 "waypoint" labels visible to the reader.
 
+## The premium bar (Bryce's build directive, 2026-08-30)
+
+Make it feel as premium as possible, creative motion, still playful, and
+leaning hard away from AI-slop tropes. Specifics:
+
+- The hare concept is approved but the prototype execution read tacky. The
+  fix is below (Motion item 2): dash-and-rest, ink-colored, mostly absent.
+- The day-arc color feel is the part he loves. Protect it and polish it.
+- Banned moves: glassmorphism, gradient blobs, particles, typewriter text,
+  parallax-on-everything, default ease-in-out, gray drop shadows. One idea
+  per moment; every animation uses the shared easing language; shadows are
+  warm-toned; the grain stays subtle.
+
 ## Motion
 
 Reference implementation: the Motion Study artboard (parameters below are
-lifted from it). All of it collapses to static-everything-visible under
-`prefers-reduced-motion`, via the existing MotionConfig + Lenis guard.
+lifted from it, then elevated per the premium bar). All of it collapses to
+static-everything-visible under `prefers-reduced-motion`, via the existing
+MotionConfig + Lenis guard.
 
 1. **The scroll is one day.** Body background lerps through stops
    `[0 paper, 0.26 golden, 0.5 oak, 0.72 bluehour, 1 night]` of overall
@@ -192,12 +206,19 @@ lifted from it). All of it collapses to static-everything-visible under
    paper → paper on dark). The exact mid stops get tuned in build so the oak
    panel in section 4 still reads against the ground; the artboard values are
    the starting point.
-2. **The trail and the hare.** A single SVG path runs the page spine. Dots
-   (r 2.4, clay, every 15px of path length) appear up to
-   `pathLength * scrollT * 1.06`; the hare rides `getPointAtLength`, steering
-   angle clamped to ±24deg, hidden before 4% and dimmed at the flag.
+2. **The trail and the hare, v2 (dash-and-rest).** A single SVG path runs
+   the page spine; dots (r 2.4, clay, every 15px of path length) still draw
+   with scroll progress. The hare does NOT glide with the scrollbar - that
+   was the tacky part. Instead it rests at the last passed waypoint (sitting
+   pose, engraved), and when scroll progress crosses the next threshold it
+   sprints there along the path in one fast ease-out burst (~0.9s, slight
+   stretch at launch, settle overshoot on arrival), then sits again. A hard
+   fling chains sprints without pausing. It renders in the section's current
+   ink color (oak on paper, paper on dark), never clay; fine engraved
+   strokes. It's absent before the first waypoint and after the flag, and
+   an occasional idle ear-flick is the only thing it does at rest.
    Waypoint circles stamp in (scale 0 → 1, back-out cubic-bezier(0.2, 1.4,
-   0.4, 1)) at fixed progress marks. Desktop only; below `md` the trail and
+   0.4, 1)) as the hare arrives. Desktop only; below `md` the trail and
    hare are hidden and the day-arc carries the narrative.
 3. **Letterpress settle.** The one entrance move, used everywhere: opacity 0,
    translateY(20px) scale(1.02) → settled, transform 0.75s
