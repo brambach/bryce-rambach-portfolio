@@ -258,8 +258,14 @@ MotionConfig + Lenis guard.
    hover, echoing the hare's trail (`.leader-dots`). Three engraved stars
    and a crescent hang over the after-dark heading; each star blinks
    rarely on its own 11/14/17s clock - the ear-flick rule applied to the
-   sky. Banned tropes stay banned: no particles, no parallax on anything
-   but photos-in-frames, no cursor gimmicks.
+   sky. A small mono clock in the bottom-left corner winds from 5:47 am to
+   11:58 pm with scroll (`day-clock.ts` + DayClock) - the scroll is one
+   day, named; its ink follows the nav's rules, and the html ground now
+   follows the day-arc color too so overscroll never flashes paper over
+   the night. The nav hare gallops in place on hover. The streak day is
+   computed from its start date (`streakDayOn`), never hardcoded. Banned
+   tropes stay banned: no particles, no parallax on anything but
+   photos-in-frames, no cursor gimmicks.
 5. **Ink-in.** Caveat notes write themselves via clip-path inset sweep, 1.1s
    ease, 0.35s delay.
 6. **Dot leaders** draw width 0 → 100% (1s ease, 0.25s delay) when their row
