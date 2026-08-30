@@ -223,8 +223,10 @@ MotionConfig + Lenis guard.
    stride phase and flatten at a crawl. At rest it lands with a small
    squash (`hare-sit-in`), breathes (`hare-breath`), flicks an ear, ignores
    scroll nudges smaller than a hop (12px deadband from where the reader
-   stopped), and sits beside the ring it stamped, never on it (24px
-   sidestep, both on settle and at first placement). It faces where it's
+   stopped), and sits beside the ring it stamped, never on it (sidestep to
+   the nearest clear side, both on settle and at first placement: 24px
+   before a ring where only its feet face it, 40px past one because the
+   ears reach back that way). It faces where it's
    going ON SCREEN, not along the path parameter - the trail zigzags, so
    forward can mean leftward; facing flips only after ~14px of committed
    horizontal travel, and near-vertical stretches keep the last facing.
