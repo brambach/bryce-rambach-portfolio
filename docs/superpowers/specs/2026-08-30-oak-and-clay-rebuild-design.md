@@ -206,20 +206,22 @@ MotionConfig + Lenis guard.
    paper → paper on dark). The exact mid stops get tuned in build so the oak
    panel in section 4 still reads against the ground; the artboard values are
    the starting point.
-2. **The trail and the hare, v2 (dash-and-rest).** A single SVG path runs
-   the page spine; dots (r 2.4, clay, every 15px of path length) still draw
-   with scroll progress. The hare does NOT glide with the scrollbar - that
-   was the tacky part. Instead it rests at the last passed waypoint (sitting
-   pose, engraved), and when scroll progress crosses the next threshold it
-   sprints there along the path in one fast ease-out burst (~0.9s, slight
-   stretch at launch, settle overshoot on arrival), then sits again. A hard
-   fling chains sprints without pausing. It renders in the section's current
-   ink color (oak on paper, paper on dark), never clay; fine engraved
-   strokes. It's absent before the first waypoint and after the flag, and
-   an occasional idle ear-flick is the only thing it does at rest.
-   Waypoint circles stamp in (scale 0 → 1, back-out cubic-bezier(0.2, 1.4,
-   0.4, 1)) as the hare arrives. Desktop only; below `md` the trail and
-   hare are hidden and the day-arc carries the narrative.
+2. **The trail and the hare, v3 (the hare is the pen).** A single SVG path
+   runs the page spine. The hare chases the reader's mapped position along
+   it with a lag and a speed cap (`hare-pursuit.ts`: exponential smoothing,
+   ~170ms time constant, top speed ~1.7px/ms), so it visibly gallops and
+   never teleports or glues to the scrollbar. The dotted trail (r 2.4,
+   clay, every 16px) is laid down BEHIND the hare as it runs - hare and
+   line are one system. Waypoint rings stamp as it passes; scroll up and it
+   turns, runs back, and the trail un-draws behind it; stop anywhere and it
+   catches up, stops, and sits (gallop = two engraved frames flip-booked at
+   0.26s with a small bounce; occasional ear flick at rest). It stays
+   essentially level - facing flips only after committed movement, slope
+   arrives as a smoothed tilt, feet on the line. Ink is the section's
+   current color (oak on paper, paper on dark), never clay. Desktop only;
+   below `md` the trail and hare are hidden and the day-arc carries the
+   narrative. (v2 dash-and-rest was built and rejected live: the line drew
+   ahead of a waiting hare and the two read as separate systems.)
 3. **Letterpress settle.** The one entrance move, used everywhere: opacity 0,
    translateY(20px) scale(1.02) → settled, transform 0.75s
    cubic-bezier(0.16, 1, 0.3, 1.35), opacity 0.45s ease. Trigger at 25%
