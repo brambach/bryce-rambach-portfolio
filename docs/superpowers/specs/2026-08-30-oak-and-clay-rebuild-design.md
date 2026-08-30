@@ -246,6 +246,20 @@ MotionConfig + Lenis guard.
 4. **Envelope reveal.** Photos hide behind a paper cover with a torn bottom
    edge; on trigger it lifts translateY(-112%) rotate(-2deg) over 1.05s
    cubic-bezier(0.5, 0, 0.15, 1).
+5. **The living layer (2026-08-30).** Entrances are one-shot; these keep the
+   page alive after them, all inside the ink-and-paper language and all
+   killed by prefers-reduced-motion. Photos breathe in their frames: every
+   Polaroid and EnvelopeReveal image is overscaled 1.12 and drifts ±4.5%
+   against scroll as its frame crosses the viewport (`useDrift`). Prints
+   lift under the cursor: `.polaroid-lift` holds the resting tilt in
+   --tilt, hover straightens it 70%, lifts 5px, scales 1.012. Ink
+   underlines draw left-to-right on nav and "take a look" links
+   (`.ink-link`). The index's dot leaders march toward the tech tag on row
+   hover, echoing the hare's trail (`.leader-dots`). Three engraved stars
+   and a crescent hang over the after-dark heading; each star blinks
+   rarely on its own 11/14/17s clock - the ear-flick rule applied to the
+   sky. Banned tropes stay banned: no particles, no parallax on anything
+   but photos-in-frames, no cursor gimmicks.
 5. **Ink-in.** Caveat notes write themselves via clip-path inset sweep, 1.1s
    ease, 0.35s delay.
 6. **Dot leaders** draw width 0 → 100% (1s ease, 0.25s delay) when their row
