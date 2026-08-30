@@ -1,3 +1,5 @@
+import { motion, useInView } from 'motion/react';
+import { useRef } from 'react';
 import { SectionHead } from './SectionHead';
 import { GlassCard } from './GlassCard';
 import { Reveal } from './Reveal';
@@ -10,7 +12,51 @@ const ROWS: { name: string; ms: string; status: 'ok' | 'warn'; sparkline: string
   { name: 'claude triage',    ms: '86 ms',  status: 'ok',   sparkline: '0,15 8,9 16,13 24,7 32,11 40,5 48,9 60,3' },
 ];
 
+const SPARK_LEN = 90; // ~length of a 60px polyline path; over-estimating is fine for dasharray
+
+function FleetRow({ r, index, inView }: { r: typeof ROWS[number]; index: number; inView: boolean }) {
+  const stroke = r.status === 'ok' ? 'rgba(134,239,172,0.9)' : 'rgba(245,158,11,0.95)';
+  const fillBg = r.status === 'ok' ? 'rgba(134,239,172,0.10)' : 'rgba(245,158,11,0.10)';
+  const fillFg = r.status === 'ok' ? 'rgb(134,239,172)' : 'rgb(245,158,11)';
+
+  return (
+    <motion.div
+      className="grid grid-cols-[1fr_70px_70px_60px] items-center gap-3 px-2 py-1.5 rounded"
+      style={{ background: 'rgba(255,255,255,0.02)' }}
+      initial={{ opacity: 0, x: 8 }}
+      animate={inView ? { opacity: 1, x: 0 } : undefined}
+      transition={{ duration: 0.55, ease: [0.2, 0.7, 0.2, 1], delay: 0.25 + index * 0.08 }}
+    >
+      <span className="font-mono text-[11px]" style={{ color: 'var(--color-ink-2)' }}>{r.name}</span>
+      <span className="font-mono text-[10.5px] text-right" style={{ color: 'var(--color-ink-3)' }}>{r.ms}</span>
+      <span
+        className={`font-mono text-[10px] px-1.5 py-0.5 rounded text-center ${r.status === 'warn' ? 'ops-retry' : ''}`}
+        style={{ background: fillBg, color: fillFg, letterSpacing: '0.06em' }}
+      >
+        {r.status === 'ok' ? 'OK' : 'RETRY'}
+      </span>
+      <svg viewBox="0 0 60 22" width="60" height="22" aria-hidden="true">
+        <motion.polyline
+          points={r.sparkline}
+          fill="none"
+          stroke={stroke}
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ strokeDasharray: SPARK_LEN }}
+          initial={{ strokeDashoffset: SPARK_LEN }}
+          animate={inView ? { strokeDashoffset: 0 } : undefined}
+          transition={{ duration: 1.1, ease: [0.2, 0.7, 0.2, 1], delay: 0.4 + index * 0.08 }}
+        />
+      </svg>
+    </motion.div>
+  );
+}
+
 export function OpsSection({ onOpen }: { onOpen: (slug: string) => void }) {
+  const mockRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(mockRef, { amount: 0.3, once: true });
+
   return (
     <section id="ops" aria-labelledby="op-h" className="relative max-w-[1280px] mx-auto px-6 py-24">
       <SectionHead
@@ -47,7 +93,7 @@ export function OpsSection({ onOpen }: { onOpen: (slug: string) => void }) {
               </button>
             </div>
 
-            <div className="ops-mock rounded-[12px] overflow-hidden" style={{ border: '1px solid var(--color-hair-2)', background: 'rgba(8,10,14,0.7)' }}>
+            <div ref={mockRef} className="ops-mock rounded-[12px] overflow-hidden" style={{ border: '1px solid var(--color-hair-2)', background: 'rgba(8,10,14,0.7)' }}>
               <div className="flex items-center gap-2 px-3 py-2 font-mono text-[11px]" style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--color-hair-2)', color: 'var(--color-ink-3)' }}>
                 <span className="flex gap-1">
                   <i className="w-2 h-2 rounded-full inline-block" style={{ background: 'rgba(255,255,255,0.18)' }} />
@@ -55,7 +101,10 @@ export function OpsSection({ onOpen }: { onOpen: (slug: string) => void }) {
                   <i className="w-2 h-2 rounded-full inline-block" style={{ background: 'rgba(255,255,255,0.18)' }} />
                 </span>
                 <span className="ml-1">ops.digitaldirections.io / fleet</span>
-                <span className="ml-auto inline-flex items-center gap-1.5" style={{ color: 'rgb(134,239,172)' }}>● live</span>
+                <span className="ml-auto inline-flex items-center gap-1.5" style={{ color: 'rgb(134,239,172)' }}>
+                  <span className="ops-live-dot" />
+                  live
+                </span>
               </div>
               <div className="grid grid-cols-[140px_1fr]">
                 <div className="p-2 text-[11px] font-mono space-y-0.5" style={{ background: 'rgba(255,255,255,0.015)', borderRight: '1px solid var(--color-hair-2)', color: 'var(--color-ink-3)' }}>
@@ -64,19 +113,8 @@ export function OpsSection({ onOpen }: { onOpen: (slug: string) => void }) {
                   ))}
                 </div>
                 <div className="p-2 space-y-1.5">
-                  {ROWS.map((r) => (
-                    <div key={r.name} className="grid grid-cols-[1fr_70px_70px_60px] items-center gap-3 px-2 py-1.5 rounded" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                      <span className="font-mono text-[11px]" style={{ color: 'var(--color-ink-2)' }}>{r.name}</span>
-                      <span className="font-mono text-[10.5px] text-right" style={{ color: 'var(--color-ink-3)' }}>{r.ms}</span>
-                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded text-center" style={{
-                        background: r.status === 'ok' ? 'rgba(134,239,172,0.10)' : 'rgba(245,158,11,0.10)',
-                        color: r.status === 'ok' ? 'rgb(134,239,172)' : 'rgb(245,158,11)',
-                        letterSpacing: '0.06em',
-                      }}>{r.status === 'ok' ? 'OK' : 'RETRY'}</span>
-                      <svg viewBox="0 0 60 22" width="60" height="22" aria-hidden="true">
-                        <polyline points={r.sparkline} fill="none" stroke={r.status === 'ok' ? 'rgba(134,239,172,0.9)' : 'rgba(245,158,11,0.95)'} strokeWidth="1.4" />
-                      </svg>
-                    </div>
+                  {ROWS.map((r, i) => (
+                    <FleetRow key={r.name} r={r} index={i} inView={inView} />
                   ))}
                 </div>
               </div>

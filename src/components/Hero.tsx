@@ -1,41 +1,39 @@
 import { lazy, Suspense } from 'react';
 import { Reveal } from './Reveal';
-import { HeroFlowField } from './HeroFlowField';
 
 const HeroIcosahedron = lazy(() => import('./HeroIcosahedron'));
 
 export function Hero() {
   return (
     <>
-      <HeroFlowField />
       <section
       id="top"
       aria-labelledby="hero-h"
       className="hero relative max-w-[1280px] mx-auto px-6 pt-[120px] pb-16 min-h-screen"
     >
-      <div className="grid gap-10 md:grid-cols-[1fr_320px] items-end">
+      <div className="grid gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] items-end">
         <div>
           <Reveal delay={1}>
             <h1
               id="hero-h"
-              className="font-serif"
+              className="hero-h1 font-serif"
               style={{
-                fontSize: 'clamp(40px, 6vw, 92px)',
-                lineHeight: 1.02,
+                fontSize: 'clamp(48px, 7.6vw, 104px)',
+                lineHeight: 0.96,
                 letterSpacing: '-0.02em',
                 color: 'var(--color-ink)',
               }}
             >
-              Bryce <em className="not-italic font-serif italic">Rambach</em>.<br />
+              Bryce <em className="font-serif italic">Rambach</em>.<br />
               Engineering high-fidelity bridges between<br />
-              <span style={{ color: 'rgb(56,189,248)' }}>human intent &amp; scalable systems.</span>
+              <span className="hero-accent">human intent &amp; scalable systems.</span>
             </h1>
           </Reveal>
 
           <Reveal delay={2}>
             <p
-              className="mt-7 max-w-[60ch] text-[15px]"
-              style={{ color: 'var(--color-ink-2)', lineHeight: 1.55 }}
+              className="mt-8 max-w-[56ch] text-[15px] md:text-[17px] font-light"
+              style={{ color: 'var(--color-ink-2)', lineHeight: 1.6 }}
             >
               A digital archive of solo-built production systems, enterprise integration architectures,
               and spatial AI experiments. No clients page. No pricing table. Just the work.
@@ -93,7 +91,7 @@ export function Hero() {
           </Reveal>
         </div>
 
-        <div className="hero-figure-slot relative h-[280px] md:h-[420px]" aria-hidden="true">
+        <div className="hero-figure-slot relative h-[360px] md:h-[560px]" aria-hidden="true">
           <Suspense fallback={null}>
             <HeroIcosahedron />
           </Suspense>
