@@ -213,15 +213,30 @@ MotionConfig + Lenis guard.
    never teleports or glues to the scrollbar. The dotted trail (r 2.4,
    clay, every 16px) is laid down BEHIND the hare as it runs - hare and
    line are one system. Waypoint rings stamp as it passes; scroll up and it
-   turns, runs back, and the trail un-draws behind it; stop anywhere and it
-   catches up, stops, and sits (gallop = two engraved frames flip-booked at
-   0.26s with a small bounce; occasional ear flick at rest). It stays
-   essentially level - facing flips only after committed movement, slope
-   arrives as a smoothed tilt, feet on the line. Ink is the section's
-   current color (oak on paper, paper on dark), never clay. Desktop only;
-   below `md` the trail and hare are hidden and the day-arc carries the
+   turns, runs back, and the trail un-draws behind it (rings un-stamp with
+   ~40px hysteresis so the sit sidestep can't wipe one); stop anywhere and
+   it catches up, stops, and sits. The gait matches the ground
+   (`hare-gait.ts`): the two engraved frames flip at a cadence set by real
+   speed - clamped 0.75-4.0 strides/s over a ~260px stride - so a slow
+   reader gets slow, deliberate hops and only a flat-out fling gets the
+   full gallop. Bounce (1.1-6.5px) and body pitch (0.8-5°) ride the same
+   stride phase and flatten at a crawl. At rest it lands with a small
+   squash (`hare-sit-in`), breathes (`hare-breath`), flicks an ear, ignores
+   scroll nudges smaller than a hop (12px deadband from where the reader
+   stopped), and sits beside the ring it stamped, never on it (24px
+   sidestep, both on settle and at first placement). It faces where it's
+   going ON SCREEN, not along the path parameter - the trail zigzags, so
+   forward can mean leftward; facing flips only after ~14px of committed
+   horizontal travel, and near-vertical stretches keep the last facing.
+   Slope arrives as a smoothed tilt, feet on the line. On re-measure
+   (resize, images settling) it keeps its spot and visibly runs to the new
+   mapping - it relocates, never teleports. Ink is the section's current
+   color (oak on paper, paper on dark), never clay. Desktop only; below
+   `md` the trail and hare are hidden and the day-arc carries the
    narrative. (v2 dash-and-rest was built and rejected live: the line drew
-   ahead of a waiting hare and the two read as separate systems.)
+   ahead of a waiting hare and the two read as separate systems.
+   `scripts/gait-verify.mjs` + `gait-verify-2.mjs` measure all of this
+   against the live dev server.)
 3. **Letterpress settle.** The one entrance move, used everywhere: opacity 0,
    translateY(20px) scale(1.02) → settled, transform 0.75s
    cubic-bezier(0.16, 1, 0.3, 1.35), opacity 0.45s ease. Trigger at 25%
