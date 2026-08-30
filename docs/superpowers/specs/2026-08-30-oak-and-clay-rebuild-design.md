@@ -112,10 +112,10 @@ already passed the voice rules.
 Full-viewport `hero-forest.jpg`, dark gradient + vignette. Centered wordmark
 "bryce." (clay full stop), Bodoni Moda 500, ~clamp(96px, 22vw, 320px).
 Subline: "I build software, run before the sun's up, and spend the rest
-chasing good light." Mono coordinate line "san diego, california" between
+chasing good light." Mono coordinate line "brisbane, australia" between
 rules. Caveat note "welcome in" with hand-drawn arrow, rotated -7deg, near the
-wordmark. Torn paper edge at the bottom with "follow the trail" + dotted
-stub. Dappled canopy light drifts across the image (two radial-gradient blobs
+wordmark. Torn paper edge at the bottom with "follow the trail"; the live hare
+waits beside it at load (a still one below md). Dappled canopy light drifts across the image (two radial-gradient blobs
 on slow alternate keyframes). Scroll hint bobs.
 
 ### 2. the work
@@ -123,7 +123,7 @@ on slow alternate keyframes). Scroll hint bobs.
 Label `the work`. Head "Systems, wired together." (Bodoni roman). Body: "By
 day I wire payroll, HR and finance platforms together at Digital Directions.
 The kind of plumbing nobody notices, which is the point." Mono tag line
-"workato · myob · deputy · netsuite". Right: `macbook-desk.jpg` rotated
+"workato · myob · deputy · netsuite". Right: `desk-6pm.jpg` (curved ultrawide, golden hour) rotated
 -1.2deg with envelope reveal, Caveat caption "the desk, 6pm", small hare stamp.
 
 ### 3. things I've made
@@ -152,7 +152,7 @@ inside the sentence (split-flap feel, see Motion). Mono footer "dawn miles ·
 clay courts when I can get them". Right: paper card rotated 1.6deg with the
 911 engraving sketch ("fig. 07 · the dream garage", "911 · oak green over
 cognac"), Caveat note below: "someday. after the streak hits 1,000". Streak
-number lives in `projects.ts` as a constant for now.
+day computes from its start date (`streakDayOn` in `site.ts`).
 
 ### 5. the vibe board
 
