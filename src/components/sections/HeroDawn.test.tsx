@@ -11,7 +11,7 @@ describe('HeroDawn', () => {
   it('carries the subline and the coordinates', () => {
     render(<HeroDawn />);
     expect(screen.getByText(/run before the sun's up/)).toBeInTheDocument();
-    expect(screen.getByText('san diego, california')).toBeInTheDocument();
+    expect(screen.getByText('brisbane, australia')).toBeInTheDocument();
   });
 
   it('invites the scroll down the trail', () => {
