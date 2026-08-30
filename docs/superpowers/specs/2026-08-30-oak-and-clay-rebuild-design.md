@@ -39,9 +39,15 @@ is one day. Premium and a little playful, never try-hard.
 
 Via fontsource (matching the current pattern):
 
-- **Bodoni Moda** 400-800 + italic. Display. Wordmark "bryce." lowercase, set
-  huge, on photography, never on empty paper. Chapter heads are short, often
-  italic. Roman for "Systems, wired together." Index project names.
+- **Fraunces** variable (opsz/wght/SOFT/WONK) + italic. Display. Replaced
+  Bodoni Moda on 2026-08-30: a didone read as fashion editorial against the
+  warm paper-and-ink world; Fraunces is the warm, slightly wonky old-style
+  the site always wanted. Display type carries SOFT 45 globally with
+  optical sizing on; the wordmark adds WONK 1 and weight 560. Wordmark
+  "bryce." lowercase, set huge letter by letter (typeset stagger, clay
+  full stop stamped in last), on photography, never on empty paper.
+  Chapter heads settle word by word (SettleWords). Roman for "Systems,
+  wired together." Index project names.
 - **Hanken Grotesk** 300-600. Body. 15-16px, line-height ~1.7.
 - **IBM Plex Mono** 400-500. Annotations: section labels (lowercase, quiet),
   coordinates, tech tags, letterspaced 0.08-0.2em, 10-12px.
