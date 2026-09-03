@@ -14,8 +14,8 @@ describe('HeroDawn', () => {
     expect(screen.getByText('brisbane, australia')).toBeInTheDocument();
   });
 
-  it('invites the scroll down the trail', () => {
+  it('promises the fog will lift', () => {
     render(<HeroDawn />);
-    expect(screen.getByText('follow the trail')).toBeInTheDocument();
+    expect(screen.getByText('the fog lifts as you scroll')).toBeInTheDocument();
   });
 });
