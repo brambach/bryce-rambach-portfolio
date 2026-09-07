@@ -1,6 +1,6 @@
 const key='bryce-journey-v2';
 export type JourneyMemory={onboarded:boolean;tahoe:boolean;discoveries:string[]};
-const known=['card','racket','journal','laptop','cafe','tennis','lake'];
+const known=['card','racket','journal','laptop','cafe','tennis','lake','coffee'];
 export function readJourneyMemory():JourneyMemory{
   try{const value=JSON.parse(localStorage.getItem(key)??'null');return {onboarded:value?.onboarded===true,tahoe:value?.tahoe===true,discoveries:Array.isArray(value?.discoveries)?value.discoveries.filter((item:unknown)=>typeof item==='string'&&known.includes(item)):[]};}catch{return {onboarded:false,tahoe:false,discoveries:[]};}
 }
